@@ -9,6 +9,10 @@ import SwiftUI
 public struct TaperedRect: Shape {
   public var taper: CGFloat = 0
   
+  public init(taper: CGFloat) {
+    self.taper = taper
+  }
+  
   public func path(in rect: CGRect) -> Path {
     let height = rect.size.height
     let width = rect.size.width

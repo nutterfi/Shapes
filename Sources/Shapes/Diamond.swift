@@ -9,6 +9,10 @@ import SwiftUI
 public struct Diamond: Shape {
   public var pointRatio: CGFloat = 0.5
   
+  public init(pointRatio: CGFloat) {
+    self.pointRatio = pointRatio
+  }
+  
   public func path(in rect: CGRect) -> Path {
     return Path { path in
       path.move(to: CGPoint(x: rect.midX, y: 0))
