@@ -6,10 +6,10 @@
 
 import SwiftUI
 
-struct Diamond: Shape {
+public struct Diamond: Shape {
   var pointRatio: CGFloat = 0.5
   
-  func path(in rect: CGRect) -> Path {
+  public func path(in rect: CGRect) -> Path {
     return Path { path in
       path.move(to: CGPoint(x: rect.midX, y: 0))
       path.addLine(to: CGPoint(x: rect.maxX, y: rect.height * pointRatio))

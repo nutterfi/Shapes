@@ -6,10 +6,10 @@
 
 import SwiftUI
 
-struct TaperedRect: Shape {
+public struct TaperedRect: Shape {
   var taper: CGFloat = 0
   
-  func path(in rect: CGRect) -> Path {
+  public func path(in rect: CGRect) -> Path {
     let height = rect.size.height
     let width = rect.size.width
     
