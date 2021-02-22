@@ -7,7 +7,7 @@
 import SwiftUI
 
 public struct Diamond: Shape {
-  var pointRatio: CGFloat = 0.5
+  public var pointRatio: CGFloat = 0.5
   
   public func path(in rect: CGRect) -> Path {
     return Path { path in
