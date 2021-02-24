@@ -9,6 +9,10 @@ import SwiftUI
 struct Polygon: Shape {
   let sides: Int
   
+  public init(sides: Int) {
+    self.sides = abs(sides)
+  }
+  
   static func coordinates(in rect: CGRect, sides: Int) -> [CGPoint] {
     let r = min(rect.size.width, rect.size.height) / 2
     let origin = CGPoint(x: rect.midX, y: rect.midY)

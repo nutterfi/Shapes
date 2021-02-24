@@ -10,11 +10,15 @@ import SwiftUI
 public struct Bullet: Shape {
   public var taper: CGFloat = 0
 
+  public init(taper: CGFloat) {
+    self.taper = abs(taper)
+  }
+  
   public func path(in rect: CGRect) -> Path {
     let height = rect.size.height
     let width = rect.size.width
     
-    let value = min(abs(taper), width / 2.0)
+    let value = min(taper, width / 2.0)
     
     return Path { path in
       path.move(to: CGPoint(x:0, y: 0))
