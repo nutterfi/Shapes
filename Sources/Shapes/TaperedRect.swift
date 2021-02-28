@@ -26,6 +26,7 @@ public struct TaperedRect: Shape {
       path.addLine(to: CGPoint(x: width, y: height / 2))
       path.addLine(to: CGPoint(x: width - value, y: height))
       path.addLine(to: CGPoint(x: value, y: height))
+      path.closeSubpath()
     }
   }
 }
