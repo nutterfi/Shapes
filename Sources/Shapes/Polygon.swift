@@ -6,14 +6,14 @@
 
 import SwiftUI
 // WIP
-struct Polygon: Shape {
+public struct Polygon: Shape {
   let sides: Int
   
   public init(sides: Int) {
     self.sides = abs(sides)
   }
   
-  static func coordinates(in rect: CGRect, sides: Int) -> [CGPoint] {
+  public static func coordinates(in rect: CGRect, sides: Int) -> [CGPoint] {
     let r = min(rect.size.width, rect.size.height) / 2
     let origin = CGPoint(x: rect.midX, y: rect.midY)
     var points = [CGPoint]()
@@ -26,7 +26,7 @@ struct Polygon: Shape {
     return points
   }
   
-  func path(in rect: CGRect) -> Path {
+  public func path(in rect: CGRect) -> Path {
     let r = min(rect.size.width, rect.size.height) / 2
     let origin = CGPoint(x: rect.midX, y: rect.midY)
     return Path { path in
