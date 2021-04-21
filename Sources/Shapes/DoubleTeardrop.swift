@@ -8,6 +8,8 @@ import SwiftUI
 
 public struct DoubleTeardrop: Shape {
   
+  public init() {}
+  
   public func path(in rect: CGRect) -> Path {
     Path { path in
       let midPoint = CGPoint(x: rect.midX, y: rect.midY)
