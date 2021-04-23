@@ -21,11 +21,11 @@ public struct Teardrop: Shape {
     return Path { path in
       path.move(to: origin)
       
-      path.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.midY), control: CGPoint(x: rect.maxX, y: rect.midY * variation))
+      path.addQuadCurve(to: CGPoint(x: rect.midX + dim * 0.5, y: rect.midY), control: CGPoint(x: rect.midX + dim * 0.5, y: rect.midY * variation))
       
       path.addArc(center: midPoint, radius: dim * 0.5, startAngle: .zero, endAngle: Angle(radians: .pi), clockwise: false)
       
-      path.addQuadCurve(to: origin, control: CGPoint(x: rect.minX, y: rect.midY * variation))
+      path.addQuadCurve(to: origin, control: CGPoint(x: rect.midX - dim * 0.5, y: rect.midY * variation))
       
       path.addLine(to: CGPoint(x: rect.midX, y: 0))
       path.closeSubpath()
