@@ -16,6 +16,8 @@ public struct Heart: Shape {
   var controlRight1: CGPoint { CGPoint(x: 0.8, y: -0.15) }
   var controlRight2: CGPoint { CGPoint(x: 1.25, y: 0.45) }
 
+  public init() {}
+  
   public func path(in rect: CGRect) -> Path {
     
     func scaledPoint(_ point: CGPoint) -> CGPoint {
