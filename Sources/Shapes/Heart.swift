@@ -9,12 +9,12 @@ import SwiftUI
 
 public struct Heart: Shape {
   // normalized
-  var origin: CGPoint { CGPoint(x: 0.5, y: 0.25) }
+  var origin: CGPoint { CGPoint(x: 0.5, y: 0.2) }
   var bottom: CGPoint { CGPoint(x: 0.5, y: 1) }
-  var controlLeft1: CGPoint { CGPoint(x: 0.2, y: -0.15) }
-  var controlLeft2: CGPoint { CGPoint(x: -0.25, y: 0.45) }
-  var controlRight1: CGPoint { CGPoint(x: 0.8, y: -0.15) }
-  var controlRight2: CGPoint { CGPoint(x: 1.25, y: 0.45) }
+  var controlLeft1: CGPoint { CGPoint(x: 0.2, y: -0.35) }
+  var controlLeft2: CGPoint { CGPoint(x: -0.4, y: 0.45) }
+  var controlRight1: CGPoint { CGPoint(x: 0.8, y: -0.35) }
+  var controlRight2: CGPoint { CGPoint(x: 1.4, y: 0.45) }
 
   public init() {}
   
@@ -37,8 +37,12 @@ public struct Heart: Shape {
 struct Heart_Previews: PreviewProvider {
     static var previews: some View {
       VStack {
-        Heart()
-          .stroke(lineWidth: 20)
+        ZStack {
+          Heart()
+            .stroke(lineWidth: 10)
+        }
+        .border(Color.black)
+        
         Divider()
         Image(systemName: "heart")
           .resizable()
