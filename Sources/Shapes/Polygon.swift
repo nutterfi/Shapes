@@ -18,9 +18,9 @@ public struct Polygon: Shape {
     let origin = CGPoint(x: rect.midX, y: rect.midY)
     var points = [CGPoint]()
     for index in 0 ..< sides {
-      let whelp: CGFloat = 2 * .pi * CGFloat(index) / CGFloat(sides)
-      let x = origin.x + r * cos(whelp)
-      let y = origin.y + r * sin(whelp)
+      let theta: CGFloat = 2 * .pi * CGFloat(index) / CGFloat(sides)
+      let x = origin.x + r * cos(theta)
+      let y = origin.y + r * sin(theta)
       points.append(CGPoint(x: x, y: y))
     }
     return points
@@ -52,8 +52,7 @@ struct Polygon_Previews: PreviewProvider {
       ZStack {
       Polygon(sides: 3)
         .fill(Color.red)
-        .frame(width: 100, height: 100)
-        .border(Color.blue)
+        .frame(width: 256, height: 256)
       }
       .previewLayout(.sizeThatFits)
     }
