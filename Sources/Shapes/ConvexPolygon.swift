@@ -24,14 +24,14 @@ public struct ConvexPolygon: RegularPolygon {
       }
       
       path.closeSubpath()
-    }
+    }.rotation(.degrees(-90)).path(in: rect)
   }
 }
 
 struct ConvexPolygon_Previews: PreviewProvider {
     static var previews: some View {
       ZStack {
-      ConvexPolygon(sides: 8)
+      ConvexPolygon(sides: 5)
         .fill(Color.red)
       }
     }

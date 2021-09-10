@@ -48,7 +48,7 @@ public struct StarPolygon: RegularPolygon {
       }
       
       path.closeSubpath()
-    }
+    }.rotation(.degrees(-90)).path(in: rect)
   }
   
 }
@@ -57,6 +57,5 @@ public struct StarPolygon_Previews: PreviewProvider {
   public static var previews: some View {
     StarPolygon(points: 5, density: 2)
       .stroke()
-      .rotation(.degrees(-90))
   }
 }
