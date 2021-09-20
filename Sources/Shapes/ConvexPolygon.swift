@@ -9,13 +9,16 @@ import SwiftUI
 public struct ConvexPolygon: RegularPolygon {
   public let sides: Int
   
+  var inset: CGFloat = .zero
+  
   public init(sides: Int) {
     self.sides = abs(sides)
   }
   
   public func path(in rect: CGRect) -> Path {
-    Path { path in
-      let vertices = vertices(in: rect)
+    let aRect = rect.insetBy(dx: inset, dy: inset)
+    return Path { path in
+      let vertices = vertices(in: aRect)
       
       path.move(to: vertices.first!)
       
@@ -24,15 +27,32 @@ public struct ConvexPolygon: RegularPolygon {
       }
       
       path.closeSubpath()
-    }.rotation(.degrees(-90)).path(in: rect)
+    }.rotation(.degrees(-90)).path(in: aRect)
+  }
+}
+
+extension ConvexPolygon: InsettableShape {
+  
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    var polygon = self
+    polygon.inset += amount
+    return polygon
   }
 }
 
 struct ConvexPolygon_Previews: PreviewProvider {
     static var previews: some View {
+      let inset: CGFloat = 50
       ZStack {
-      ConvexPolygon(sides: 5)
-        .fill(Color.red)
+        Circle()
+          .inset(by: inset)
+          .strokeBorder(Color.red, lineWidth: 10)
+        
+        ConvexPolygon(sides: 7)
+          .inset(by: inset)
+          .strokeBorder(Color.green.opacity(0.5), lineWidth: 10)
+        .border(Color.red)
       }
+      .frame(width: 256, height: 256)
     }
 }
