@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-struct ReuleauxTriangle: Shape {
-  func path(in rect: CGRect) -> Path {
+public struct ReuleauxTriangle: Shape {
+  
+  public init() {}
+  
+  public func path(in rect: CGRect) -> Path {
     ReuleauxPolygon(sides: 3).path(in: rect)
   }
   

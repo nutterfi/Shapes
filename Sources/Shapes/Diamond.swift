@@ -8,6 +8,8 @@ import SwiftUI
 
 public struct Diamond: Shape {
   
+  public init() {}
+  
   public func path(in rect: CGRect) -> Path {
     Kite(pointRatio: 0.5).path(in: rect)
   }

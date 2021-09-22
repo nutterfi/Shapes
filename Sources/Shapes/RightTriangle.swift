@@ -11,6 +11,8 @@ public struct RightTriangle: Shape {
   
   var inset: CGFloat = .zero
   
+  public init() {}
+  
   public func path(in rect: CGRect) -> Path {
     let aRect = rect.insetBy(dx: inset, dy: inset)
     return Path { path in

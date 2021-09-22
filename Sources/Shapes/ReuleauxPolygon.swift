@@ -18,6 +18,10 @@ public struct ReuleauxPolygon: Polygon {
   /// must be odd
   public var sides: Int
   
+  public init(sides: Int) {
+    self.sides = sides
+  }
+  
   public func path(in rect: CGRect) -> Path {
     Path { path in
       let points = vertices(in: rect)
