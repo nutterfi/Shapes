@@ -6,20 +6,25 @@
 
 import SwiftUI
 
-public struct Diamond: Shape {
+public struct Diamond: NFiShape {
+  public var inset: CGFloat = .zero
   
   public init() {}
   
   public func path(in rect: CGRect) -> Path {
-    Kite(pointRatio: 0.5).path(in: rect)
+    Kite(pointRatio: 0.5).path(in: rect.insetBy(dx: inset, dy: inset))
   }
   
 }
 
 struct Diamond_Previews: PreviewProvider {
   static var previews: some View {
-    Diamond()
-      .frame(width: 256, height: 256)
+    ZStack {
+      Diamond()
       .foregroundColor(.green)
+      Diamond().inset(by: 64)
+        .stroke()
+    }
+    .frame(width: 256, height: 256)
   }
 }

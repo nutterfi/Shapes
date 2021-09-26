@@ -7,29 +7,27 @@
 
 import SwiftUI
 
-public struct RightTriangle: Shape {
+public struct RightTriangle: Polygon {
   
-  var inset: CGFloat = .zero
+  public var inset: CGFloat = .zero
+  public var sides: Int = 3
   
   public init() {}
+  
+  public func vertices(in rect: CGRect) -> [CGPoint] {
+    [
+      CGPoint(x: rect.maxX, y: rect.minY),
+      CGPoint(x: rect.maxX, y: rect.maxY),
+      CGPoint(x: rect.minX, y: rect.maxY)
+    ]
+  }
   
   public func path(in rect: CGRect) -> Path {
     let aRect = rect.insetBy(dx: inset, dy: inset)
     return Path { path in
-      path.move(to: CGPoint(x: aRect.maxX, y: aRect.minY))
-      path.addLine(to: CGPoint(x: aRect.maxX, y: aRect.maxY))
-      path.addLine(to: CGPoint(x: aRect.minX, y: aRect.maxY))
+      path.addLines(vertices(in: aRect))
       path.closeSubpath()
     }
-  }
-}
-
-extension RightTriangle: InsettableShape {
-  
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    var triangle = self
-    triangle.inset += amount
-    return triangle
   }
 }
 

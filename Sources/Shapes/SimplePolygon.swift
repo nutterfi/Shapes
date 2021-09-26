@@ -6,9 +6,10 @@
 
 import SwiftUI
 
-struct SimplePolygon: Polygon {
+public struct SimplePolygon: Polygon {
   
-  var sides: Int {
+  public var inset: CGFloat = .zero
+  public var sides: Int {
     ratios.count
   }
   
@@ -25,7 +26,7 @@ struct SimplePolygon: Polygon {
     self.ratios = ratios.sorted()
   }
   
-  func vertices(in rect: CGRect) -> [CGPoint] {
+  public func vertices(in rect: CGRect) -> [CGPoint] {
     let r = min(rect.size.width, rect.size.height) / 2
     let origin = CGPoint(x: rect.midX, y: rect.midY)
     return ratios.map {
@@ -34,7 +35,7 @@ struct SimplePolygon: Polygon {
     }
   }
   
-  func path(in rect: CGRect) -> Path {
+  public func path(in rect: CGRect) -> Path {
     Path { path in
       let vertices = vertices(in: rect)
       
@@ -52,7 +53,7 @@ struct SimplePolygon_Previews: PreviewProvider {
     static var previews: some View {
       ZStack {
         Circle().stroke()
-        SimplePolygon(ratios: [0.1, 0.5, 0.756])
+        SimplePolygon(ratios: [0.1, 0.5, 0.756, 0.3, 0.4])
         .foregroundColor(Color.blue)
         .opacity(0.3)
       }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct Heart: Shape {
+public struct Heart: NFiShape {
   // normalized
   var origin: CGPoint { CGPoint(x: 0.5, y: 0.2) }
   var bottom: CGPoint { CGPoint(x: 0.5, y: 1) }
@@ -15,13 +15,17 @@ public struct Heart: Shape {
   var controlLeft2: CGPoint { CGPoint(x: -0.4, y: 0.45) }
   var controlRight1: CGPoint { CGPoint(x: 0.8, y: -0.35) }
   var controlRight2: CGPoint { CGPoint(x: 1.4, y: 0.45) }
+  
+  public var inset: CGFloat = .zero
 
   public init() {}
   
   public func path(in rect: CGRect) -> Path {
     
+    let aRect = rect.insetBy(dx: inset, dy: inset)
+    
     func scaledPoint(_ point: CGPoint) -> CGPoint {
-      CGPoint(x: point.x * rect.width, y: point.y * rect.height)
+      CGPoint(x: aRect.minX + point.x * aRect.width, y: aRect.minY + point.y * aRect.height)
     }
     
     return Path { path in
@@ -40,10 +44,16 @@ struct Heart_Previews: PreviewProvider {
         ZStack {
           Heart()
             .stroke(lineWidth: 10)
+            .scaledToFit()
+          Heart()
+            .inset(by: 80)
+            .stroke(lineWidth: 2)
+            .scaledToFit()
         }
         .border(Color.black)
         
         Divider()
+        
         Image(systemName: "heart")
           .resizable()
           .scaledToFit()

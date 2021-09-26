@@ -6,22 +6,32 @@
 
 import SwiftUI
 
+// Good job Chat
+public struct Reuleaux {
+  static let triangle = ReuleauxPolygon(sides: 3)
+  static let pentagon = ReuleauxPolygon(sides: 5)
+  static let septagon = ReuleauxPolygon(sides: 7)
+  static let nonagon = ReuleauxPolygon(sides: 9)
+}
+
 /**
  A curve of constant width made up of circular arcs of constant radius. This implementation assumes odd-number sided regular polygons
  */
 public struct ReuleauxPolygon: Polygon {
   
-  public func vertices(in rect: CGRect) -> [CGPoint] {
-    ConvexPolygon(sides: sides).vertices(in: rect)
-  }
+  public var inset: CGFloat = 0
   
-  /// must be odd
+  /// Should be odd. Undefined shape for even-sided cases
   public var sides: Int
   
   public init(sides: Int) {
     self.sides = sides
   }
   
+  public func vertices(in rect: CGRect) -> [CGPoint] {
+    ConvexPolygon(sides: sides).vertices(in: rect)
+  }
+
   public func path(in rect: CGRect) -> Path {
     Path { path in
       let points = vertices(in: rect)
@@ -55,7 +65,7 @@ public struct ReuleauxPolygon: Polygon {
 
 struct ReuleauxPolygon_Previews: PreviewProvider {
     static var previews: some View {
-      ReuleauxPolygon(sides: 5)
+      Reuleaux.triangle
         .stroke()
     }
 }

@@ -7,29 +7,26 @@
 
 import SwiftUI
 
-public struct IsoscelesTriangle: Shape {
-  
-  var inset: CGFloat = .zero
+public struct IsoscelesTriangle: Polygon {
+  public var sides: Int = 3
+  public var inset: CGFloat = .zero
   
   public init() {}
+  
+  public func vertices(in rect: CGRect) -> [CGPoint] {
+    [
+      CGPoint(x: rect.midX, y: rect.minY),
+      CGPoint(x: rect.maxX, y: rect.maxY),
+      CGPoint(x: rect.minX, y: rect.maxY)
+    ]
+  }
 
   public func path(in rect: CGRect) -> Path {
     let aRect = rect.insetBy(dx: inset, dy: inset)
     return Path { path in
-      path.move(to: CGPoint(x: aRect.midX, y: aRect.minY))
-      path.addLine(to: CGPoint(x: aRect.maxX, y: aRect.maxY))
-      path.addLine(to: CGPoint(x: aRect.minX, y: aRect.maxY))
+      path.addLines(vertices(in: aRect))
       path.closeSubpath()
     }
-  }
-}
-
-extension IsoscelesTriangle: InsettableShape {
-  
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    var triangle = self
-    triangle.inset += amount
-    return triangle
   }
 }
 

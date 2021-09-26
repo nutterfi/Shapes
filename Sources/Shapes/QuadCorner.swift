@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-public struct QuadCorner: Shape {
+public struct QuadCorner: NFiShape {
+  public var inset: CGFloat = .zero
   public var cornerRadius: CGFloat = 0.0
   
   public init(cornerRadius: CGFloat) {
@@ -15,39 +16,44 @@ public struct QuadCorner: Shape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let width = rect.width
-    let height = rect.height
+    
+    let aRect = rect.insetBy(dx: inset, dy: inset)
     
     return Path { path in
       // starting point
-      path.move(to: CGPoint(x: 0.0, y: cornerRadius))
+      path.move(to: CGPoint(x: aRect.minX, y: aRect.minY + cornerRadius))
       
-      path.addLine(to: .zero)
+      path.addLine(to: CGPoint(x: aRect.minX, y: aRect.minY))
       
-      path.addLine(to: CGPoint(x: cornerRadius, y: 0))
+      path.addLine(to: CGPoint(x: aRect.minX + cornerRadius, y: aRect.minY))
       
-      path.move(to: CGPoint(x: width - cornerRadius, y: 0))
+      path.move(to: CGPoint(x: aRect.maxX - cornerRadius, y: aRect.minY))
       
-      path.addLine(to: CGPoint(x: width, y: 0))
-      path.addLine(to: CGPoint(x: width, y: cornerRadius))
+      path.addLine(to: CGPoint(x: aRect.maxX, y: aRect.minY))
+      path.addLine(to: CGPoint(x: aRect.maxX, y: aRect.minY + cornerRadius))
       
-      path.move(to: CGPoint(x: width, y: height - cornerRadius))
+      path.move(to: CGPoint(x: aRect.maxX, y: aRect.maxY - cornerRadius))
       
-      path.addLine(to: CGPoint(x: width, y: height))
-      path.addLine(to: CGPoint(x: width - cornerRadius, y: height))
+      path.addLine(to: CGPoint(x: aRect.maxX, y: aRect.maxY))
+      path.addLine(to: CGPoint(x: aRect.maxX - cornerRadius, y: aRect.maxY))
       
-      path.move(to: CGPoint(x: cornerRadius, y: height))
+      path.move(to: CGPoint(x: aRect.minX + cornerRadius, y: aRect.maxY))
       
-      path.addLine(to: CGPoint(x: 0, y: height))
-      path.addLine(to: CGPoint(x: 0, y: height - cornerRadius))
+      path.addLine(to: CGPoint(x: aRect.minX, y: aRect.maxY))
+      path.addLine(to: CGPoint(x: aRect.minX, y: aRect.maxY - cornerRadius))
     }
   }
 }
 
 struct QuadCorner_Previews: PreviewProvider {
     static var previews: some View {
-      QuadCorner(cornerRadius: 50)
-        .stroke(Color.purple)
-        .frame(width: 256, height: 512)
+      ZStack {
+        QuadCorner(cornerRadius: 50)
+          .stroke(Color.purple)
+        QuadCorner(cornerRadius: 50)
+          .inset(by: 20)
+          .stroke(Color.purple)
+      }
+      .frame(width: 256, height: 512)
     }
 }

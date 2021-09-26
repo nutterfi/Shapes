@@ -14,6 +14,7 @@ import SwiftUI
  */
 public struct StarPolygon: RegularPolygon {
   
+  public var inset: CGFloat = 0
   public var sides: Int
   
   /// The density of a star polygon. All possible permutations can be generated with density values less than half of the number of points (q < p/2)

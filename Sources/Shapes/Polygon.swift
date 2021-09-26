@@ -6,8 +6,20 @@
 
 import SwiftUI
 
+public protocol NFiShape: InsettableShape {
+  var inset: CGFloat { get set }
+}
+
+public extension NFiShape {
+  func inset(by amount: CGFloat) -> some InsettableShape {
+    var me = self
+    me.inset += amount
+    return me
+  }
+}
+
 /// A plane figure that is described by a finite number of straight line segments connected to form a closed polygonal chain
-public protocol Polygon: Shape {
+public protocol Polygon: NFiShape {
   var sides: Int { get }
   func vertices(in rect: CGRect) -> [CGPoint]
 }

@@ -6,8 +6,12 @@
 
 import SwiftUI
 
-public struct Teardrop: Shape {
+public struct Teardrop: NFiShape {
+  
+  public var inset: CGFloat = .zero
+  
   // TODO: Consider using a CGPoint instead for better customization
+  // FIXME: Better usage of space
   public var variation: CGFloat
   
   public init(_ variation: CGFloat = 0.5) {
@@ -15,19 +19,20 @@ public struct Teardrop: Shape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let dim = min(rect.width, rect.height)
-    let midPoint = CGPoint(x: rect.midX, y: rect.midY)
-    let origin = CGPoint(x: rect.midX, y: 0)
+    let aRect = rect.insetBy(dx: inset, dy: inset)
+    
+    let dim = min(aRect.width, aRect.height)
+    let midPoint = CGPoint(x: aRect.midX, y: aRect.midY)
+    let origin = CGPoint(x: aRect.midX, y: aRect.minY)
+    
     return Path { path in
       path.move(to: origin)
       
-      path.addQuadCurve(to: CGPoint(x: rect.midX + dim * 0.5, y: rect.midY), control: CGPoint(x: rect.midX + dim * 0.5, y: rect.midY * variation))
+      path.addQuadCurve(to: CGPoint(x: aRect.midX + dim * 0.5, y: aRect.midY), control: CGPoint(x: aRect.midX + dim * 0.5, y: aRect.midY * variation))
       
       path.addArc(center: midPoint, radius: dim * 0.5, startAngle: .zero, endAngle: Angle(radians: .pi), clockwise: false)
       
-      path.addQuadCurve(to: origin, control: CGPoint(x: rect.midX - dim * 0.5, y: rect.midY * variation))
-      
-      path.addLine(to: CGPoint(x: rect.midX, y: 0))
+      path.addQuadCurve(to: origin, control: CGPoint(x: aRect.midX - dim * 0.5, y: aRect.midY * variation))
       path.closeSubpath()
     }
   }
@@ -36,11 +41,16 @@ public struct Teardrop: Shape {
 
 struct Teardrop_Previews: PreviewProvider {
     static var previews: some View {
-      Teardrop()
-          .rotation(Angle(radians: .pi))
-          .stroke(Color.purple)
-          .frame(width: 100, height: 180)
-          .padding()
-          .border(Color.black)
+      ZStack {
+        Teardrop()
+            .rotation(Angle(radians: .pi))
+            .stroke(Color.purple)
+        Teardrop()
+          .inset(by: 32)
+            .rotation(Angle(radians: .pi))
+            .stroke(Color.purple)
+      }
+      .border(Color.black)
+      .frame(width: 256, height: 512)
     }
 }
