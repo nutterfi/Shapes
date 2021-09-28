@@ -27,7 +27,7 @@ public struct StarPolygon: RegularPolygon {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let vertices = vertices(in: rect)
+      let vertices = vertices(in: rect.insetBy(dx: inset, dy: inset))
       path.move(to: vertices.first!)
       
       var usedIndexes = Set<Int>()
@@ -56,7 +56,13 @@ public struct StarPolygon: RegularPolygon {
 
 public struct StarPolygon_Previews: PreviewProvider {
   public static var previews: some View {
-    StarPolygon(points: 5, density: 2)
-      .stroke()
+    ZStack {
+      StarPolygon(points: 5, density: 2)
+        
+      StarPolygon(points: 5, density: 2)
+        .inset(by: 50)
+        .stroke(Color.green)
+        
+    }
   }
 }
