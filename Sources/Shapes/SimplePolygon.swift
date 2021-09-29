@@ -15,14 +15,14 @@ public struct SimplePolygon: Polygon {
   
   var ratios: [CGFloat] = []
   
-  init(sides: Int) {
+  public init(sides: Int) {
     for _ in 0..<sides {
       ratios.append(CGFloat.random(in: 0...1))
       ratios = ratios.sorted()
     }
   }
   
-  init(ratios: [CGFloat]) {
+  public init(ratios: [CGFloat]) {
     self.ratios = ratios.sorted()
   }
   
