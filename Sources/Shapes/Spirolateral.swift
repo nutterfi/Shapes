@@ -21,6 +21,8 @@ public struct Spirolateral: Shape {
   /// for single-valued turns, specifies which indexes are to be drawn in reverse
   public var reversedIndexes = [Int]()
   
+  public init() {}
+  
   public func path(in rect: CGRect) -> Path {
     Path { path in
       var point = CGPoint(x: rect.midX, y: rect.midY)
