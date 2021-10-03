@@ -17,11 +17,16 @@ public struct Spirolateral: Shape {
   /// turning angle in degrees
   public var turningAngle: CGFloat = 60
   /// number of repetitions
-  public var repetitions: Int = 5
+  public var repetitions: Int = 3
   /// for single-valued turns, specifies which indexes are to be drawn in reverse
   public var reversedIndexes = [Int]()
   
-  public init() {}
+  public init(turns: [Int] = [10], turningAngle: CGFloat = 60, repetitions: Int = 3, reversedIndexes: [Int] = []) {
+    self.turns = turns
+    self.turningAngle = turningAngle
+    self.repetitions = repetitions
+    self.reversedIndexes = reversedIndexes
+  }
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
