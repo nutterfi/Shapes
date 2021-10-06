@@ -49,7 +49,7 @@ public struct StarPolygon: RegularPolygon {
       }
       
       path.closeSubpath()
-    }.rotation(.degrees(-90)).path(in: rect)
+    }
   }
   
 }

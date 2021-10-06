@@ -8,10 +8,10 @@ import SwiftUI
 
 // Good job Chat
 public struct Reuleaux {
-  static let triangle = ReuleauxPolygon(sides: 3)
-  static let pentagon = ReuleauxPolygon(sides: 5)
-  static let septagon = ReuleauxPolygon(sides: 7)
-  static let nonagon = ReuleauxPolygon(sides: 9)
+  public static let triangle = ReuleauxPolygon(sides: 3)
+  public static let pentagon = ReuleauxPolygon(sides: 5)
+  public static let septagon = ReuleauxPolygon(sides: 7)
+  public static let nonagon = ReuleauxPolygon(sides: 9)
 }
 
 /**
@@ -33,8 +33,9 @@ public struct ReuleauxPolygon: Polygon {
   }
 
   public func path(in rect: CGRect) -> Path {
-    Path { path in
-      let points = vertices(in: rect)
+    let aRect = rect.insetBy(dx: inset, dy: inset)
+    return Path { path in
+      let points = vertices(in: aRect)
             
       // length from furthest points
       let dx = abs(points[(sides-1)/2].x - points[0].x)
@@ -47,8 +48,8 @@ public struct ReuleauxPolygon: Polygon {
       // arc length centered at first position
       let delta = .pi / CGFloat(sides)
       
-      // start angle at first position
-      let a0 = .pi - (.pi / (2.0 * CGFloat(sides)))
+      // start angle at first position, accounting for N pointing origin
+      let a0 = .pi - (.pi / (2.0 * CGFloat(sides))) - .pi / 2
       
       // the arc is drawn for each side of the polygon where the center is the opposite point
       for i in 0..<sides {
@@ -58,14 +59,25 @@ public struct ReuleauxPolygon: Polygon {
       path.closeSubpath()
       
     }
-    .rotation(.degrees(-90)).path(in: rect)
   }
     
 }
 
 struct ReuleauxPolygon_Previews: PreviewProvider {
     static var previews: some View {
-      Reuleaux.triangle
-        .stroke()
+      ZStack {
+        Reuleaux.triangle
+          .stroke()
+        Reuleaux.triangle.inset(by: 10)
+          .stroke()
+        
+        let vertices = Reuleaux.triangle.vertices(in: CGRect(x: 0, y: 0, width: 256, height: 256))
+        ForEach(0..<vertices.count, id: \.self) { index in
+          let vertex = vertices[index]
+          Circle().frame(width:10).offset(x: -128 + vertex.x, y: -128 + vertex.y)
+        }
+      }
+      .frame(width: 256, height: 256)
+      .border(Color.black)
     }
 }

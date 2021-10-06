@@ -21,7 +21,6 @@ public struct ConvexPolygon: RegularPolygon {
       path.addLines(vertices(in: aRect))
       path.closeSubpath()
     }
-    .rotation(.degrees(-90)).path(in: aRect)
   }
 }
 
@@ -37,6 +36,13 @@ struct ConvexPolygon_Previews: PreviewProvider {
           .inset(by: inset)
           .strokeBorder(Color.green.opacity(0.8), lineWidth: 10)
         .border(Color.red)
+        
+        let vertices = ConvexPolygon(sides: 7).vertices(in: CGRect(x: 0, y: 0, width: 256, height: 256))
+        ForEach(0..<vertices.count, id: \.self) { index in
+          let vertex = vertices[index]
+          Circle().frame(width:10).offset(x: -128 + vertex.x, y: -128 + vertex.y)
+        }
+        
       }
       .frame(width: 256, height: 256)
     }

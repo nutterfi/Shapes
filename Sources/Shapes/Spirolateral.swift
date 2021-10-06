@@ -11,7 +11,9 @@ import SwiftUI
 /// TODO:
 ///  Compute whether it can close
 ///  Compute how many reps required to close
-public struct Spirolateral: Shape {
+public struct Spirolateral: NFiShape {
+  public var inset: CGFloat = .zero
+  
   /// if a single value in the array, the shape will sequentially increase turns. If multiple values are in the array, the shape will use turn values in the order they are received, where negative values indicate reversals
   public var turns: [Int] = [10]
   /// turning angle in degrees
@@ -30,7 +32,9 @@ public struct Spirolateral: Shape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      var point = CGPoint(x: rect.midX, y: rect.midY)
+      let aRect = rect.insetBy(dx: inset, dy: inset)
+      
+      var point = CGPoint(x: aRect.midX, y: aRect.midY)
       path.move(to: point)
       
       var angle: CGFloat = 0
@@ -61,16 +65,22 @@ public struct Spirolateral: Shape {
       let bounding = path.boundingRect
       
       path = path
-        .offsetBy(dx: rect.midX - bounding.midX, dy: rect.midY - bounding.midY)
-        .scale(x: rect.width / bounding.width, y: rect.height / bounding.height).path(in: rect)
+        .offsetBy(dx: aRect.midX - bounding.midX, dy: aRect.midY - bounding.midY)
+        .scale(x: aRect.width / bounding.width, y: aRect.height / bounding.height).path(in: aRect)
     }
   }
 }
 
 struct Spirolateral_Previews: PreviewProvider {
   static var previews: some View {
-    Spirolateral()
-      .stroke()
-      .previewDevice("iPad Pro (12.9-inch) (5th generation)")
+    ZStack {
+      Spirolateral()
+        .fill(Color.red)
+      Spirolateral()
+        .inset(by: 200)
+        .stroke(lineWidth: 5)
+        .border(Color.purple)
+    }
+    .previewDevice("iPad Pro (12.9-inch) (5th generation)")
   }
 }
