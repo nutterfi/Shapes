@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct Quad: Polygon {
   public var inset: CGFloat = .zero
-  
+  public init() {}
   public func path(in rect: CGRect) -> Path {
     Path { path in
       path.addRect(rect.insetBy(dx: inset, dy: inset))
