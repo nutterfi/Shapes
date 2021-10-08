@@ -7,7 +7,7 @@
 import SwiftUI
 
 public struct ConvexPolygon: RegularPolygon {
-  public let sides: Int
+  public var sides: Int
   
   public var inset: CGFloat = .zero
   
@@ -20,6 +20,17 @@ public struct ConvexPolygon: RegularPolygon {
     return Path { path in
       path.addLines(vertices(in: aRect))
       path.closeSubpath()
+    }
+  }
+}
+
+extension ConvexPolygon: Animatable {
+  public var animatableData: CGFloat {
+    get {
+      CGFloat(sides)
+    }
+    set {
+      sides = Int(newValue)
     }
   }
 }

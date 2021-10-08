@@ -18,7 +18,7 @@ public struct StarPolygon: RegularPolygon {
   public var sides: Int
   
   /// The density of a star polygon. All possible permutations can be generated with density values less than half of the number of points (q < p/2)
-  let density: Int
+  var density: Int
   
   public init(points: Int, density: Int) {
     self.sides = abs(points)
@@ -52,6 +52,18 @@ public struct StarPolygon: RegularPolygon {
     }
   }
   
+}
+
+extension StarPolygon: Animatable {
+  public var animatableData: AnimatablePair<CGFloat, CGFloat> {
+    get {
+      AnimatablePair(CGFloat(sides), CGFloat(density))
+    }
+    set {
+      sides = Int(newValue.first)
+      density = Int(newValue.second)
+    }
+  }
 }
 
 public struct StarPolygon_Previews: PreviewProvider {

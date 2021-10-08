@@ -71,6 +71,18 @@ public struct Spirolateral: NFiShape {
   }
 }
 
+extension Spirolateral: Animatable {
+  public var animatableData: AnimatablePair<CGFloat, CGFloat> {
+    get {
+      AnimatablePair(CGFloat(repetitions), turningAngle)
+    }
+    set {
+      repetitions = Int(newValue.first)
+      turningAngle = newValue.second
+    }
+  }
+}
+
 struct Spirolateral_Previews: PreviewProvider {
   static var previews: some View {
     ZStack {
