@@ -9,7 +9,12 @@ import SwiftUI
 
 // WIP - NO math behind this yet
 public struct TriquetraView: View {
-  public init() {}
+  public var lineWidth: CGFloat
+  
+  public init(lineWidth: CGFloat = 5) {
+    self.lineWidth = lineWidth
+  }
+  
   public var body: some View {
     GeometryReader { proxy in
       let dim = min(proxy.size.width, proxy.size.height)
@@ -17,16 +22,28 @@ public struct TriquetraView: View {
       ZStack {
         ZStack {
           Lens()
-            .stroke(Color.purple, lineWidth: 5)
+            .stroke(style: StrokeStyle(
+              lineWidth: lineWidth,
+              lineCap: .round,
+              lineJoin: .miter
+            ))
             .offset(x: 0, y: -dim * offsetY)
             .frame(width: dim * 0.75, height: dim * 0.75)
           Lens()
-            .stroke(Color.purple, lineWidth: 5)
+            .stroke(style: StrokeStyle(
+              lineWidth: lineWidth,
+              lineCap: .round,
+              lineJoin: .miter
+            ))
             .offset(x: 0, y: -dim * offsetY)
             .rotationEffect(.degrees(120))
             .frame(width: dim * 0.75, height: dim * 0.75)
           Lens()
-            .stroke(Color.purple, lineWidth: 5)
+            .stroke(style: StrokeStyle(
+              lineWidth: lineWidth,
+              lineCap: .round,
+              lineJoin: .miter
+            ))
             .offset(x: 0, y: -dim * offsetY)
             .rotationEffect(.degrees(240))
             .frame(width: dim * 0.75, height: dim * 0.75)
@@ -41,9 +58,10 @@ public struct TriquetraView: View {
 struct Triquetra_Previews: PreviewProvider {
     static var previews: some View {
       VStack {
-        TriquetraView()
+        TriquetraView(lineWidth: 20)
+          .background(Color.blue)
+          .foregroundColor(Color.white.opacity(0.4))
           .frame(width: 256, height: 256)
-          .border(Color.purple)
       }
     }
 }
