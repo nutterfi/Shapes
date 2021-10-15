@@ -17,7 +17,7 @@ public struct RoundedCornerRectangle: NFiShape {
   
   public var cornerRadius: CGFloat
   
-  public init(cornerRadius: CGFloat, corners: [Corner] = []) {
+  public init(cornerRadius: CGFloat, corners: [Corner] = [.topLeft, .topRight, .bottomLeft, .bottomRight]) {
     self.cornerRadius = cornerRadius
     self.corners = corners
   }
@@ -73,8 +73,12 @@ public struct RoundedCornerRectangle: NFiShape {
 
 struct RoundedCornerRectangle_Previews: PreviewProvider {
   static var previews: some View {
-    RoundedCornerRectangle(cornerRadius: 32, corners: [.topLeft, .topRight, .bottomRight])
-      .frame(width: 256, height: 256)
-      .previewLayout(.sizeThatFits)
+    Group {
+      RoundedCornerRectangle(cornerRadius: 32, corners: [.topLeft, .topRight, .bottomRight])
+      
+      RoundedCornerRectangle(cornerRadius: 32)
+    }
+    .previewLayout(.sizeThatFits)
+    .frame(width: 256, height: 256)
   }
 }
