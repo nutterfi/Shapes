@@ -40,16 +40,24 @@ public struct IsotoxalPolygon: Polygon {
   
 }
 
+extension IsotoxalPolygon: Animatable {
+  public var animatableData: CGFloat {
+    get {
+      innerRadius
+    }
+    set {
+      innerRadius = newValue
+    }
+  }
+}
+
 struct IsotoxalPolygon_Previews: PreviewProvider {
   static var previews: some View {
     ZStack {
       let innerRadius: CGFloat = 0.5
-      Circle().stroke()
-      IsotoxalPolygon(sides: 8, innerRadius: innerRadius)
-      
-      IsotoxalPolygon(sides: 8, innerRadius: innerRadius)
-        .inset(by: 50)
-        .fill(Color.blue)
+      Circle().stroke(Color.gray, lineWidth: 0.5)
+      IsotoxalPolygon(sides: 20, innerRadius: innerRadius)
+        .stroke()
 
     }
     .frame(width: 256, height: 512)
