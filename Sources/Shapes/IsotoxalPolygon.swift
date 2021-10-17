@@ -32,7 +32,7 @@ public struct IsotoxalPolygon: Polygon {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      path.addLines(vertices(in: rect))
+      path.addLines(vertices(in: rect.insetBy(dx: inset, dy: inset)))
       path.closeSubpath()
     }
   }
@@ -46,8 +46,10 @@ struct IsotoxalPolygon_Previews: PreviewProvider {
       let innerRadius: CGFloat = 0.5
       Circle().stroke()
       IsotoxalPolygon(sides: 8, innerRadius: innerRadius)
-        .rotationEffect(.radians(.pi))
-        .border(Color.purple)
+      
+      IsotoxalPolygon(sides: 8, innerRadius: innerRadius)
+        .inset(by: 50)
+        .fill(Color.blue)
 
     }
     .frame(width: 256, height: 512)
