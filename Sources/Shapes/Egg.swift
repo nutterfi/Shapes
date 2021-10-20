@@ -13,7 +13,7 @@ public struct Egg: Shape {
   public var apexAngle: CGFloat
   
   public init(apexAngle: CGFloat = 90) {
-    self.apexAngle = apexAngle
+    self.apexAngle = min(179, max(61, abs(apexAngle)))
   }
   
   var angleC: CGFloat {
@@ -59,7 +59,7 @@ public struct Egg: Shape {
 
 struct Egg_Previews: PreviewProvider {
     static var previews: some View {
-      Egg()
+      Egg(apexAngle: 3)
         .frame(width: 256, height: 256)
     }
 }
