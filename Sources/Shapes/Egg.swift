@@ -9,10 +9,10 @@ import SwiftUI
 
 /// Draws a Moss's egg shape
 /// https://en.wikipedia.org/wiki/Moss%27s_egg
-struct Egg: Shape {
-  var apexAngle: CGFloat
+public struct Egg: Shape {
+  public var apexAngle: CGFloat
   
-  init(apexAngle: CGFloat = 90) {
+  public init(apexAngle: CGFloat = 90) {
     self.apexAngle = apexAngle
   }
   
@@ -20,7 +20,7 @@ struct Egg: Shape {
     (180 - apexAngle) * 0.5
   }
   
-  func path(in rect: CGRect) -> Path {
+  public func path(in rect: CGRect) -> Path {
     Path { path in
       /**
        1. Draw a semicircle on the base AC of the triangle, outside of the triangle.
