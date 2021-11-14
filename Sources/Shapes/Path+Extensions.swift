@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-enum OgeeType {
+public enum OgeeType {
   case cymaRecta // "Sai-muh"
   case cymaReversa
 }
 
-extension Path {
+public extension Path {
   mutating func addSCurve(in rect: CGRect, control1: CGPoint, control2: CGPoint, reverse: Bool = false) {
     var path = Path()
     path.move(to: CGPoint(x: rect.minX, y: rect.maxY))
