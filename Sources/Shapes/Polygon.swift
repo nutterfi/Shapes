@@ -30,10 +30,14 @@ public protocol RegularPolygon: Polygon {}
 public extension RegularPolygon {
   // obtains p equally spaced points around a circle inscribed in rect
   func vertices(in rect: CGRect) -> [CGPoint] {
+    vertices(in: rect, offset: .zero)
+  }
+  
+  func vertices(in rect: CGRect, offset: Angle = .zero) -> [CGPoint] {
     let r = min(rect.size.width, rect.size.height) / 2
     let origin = CGPoint(x: rect.midX, y: rect.midY)
     return Array(0 ..< sides).map {
-      let theta = 2 * .pi * CGFloat($0) / CGFloat(sides) - .pi / 2 // the origin will now be facing north
+      let theta = 2 * .pi * CGFloat($0) / CGFloat(sides) - offset.radians - .pi / 2  // pointing north!
       return CGPoint(x: origin.x + r * cos(theta), y: origin.y + r * sin(theta))
     }
   }
