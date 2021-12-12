@@ -33,7 +33,7 @@ public struct Torx: NFiShape {
                       dx: dim * controlPointRatio,
                       dy: dim * controlPointRatio
                     ),
-                  offset: .radians(-.pi / Double(sides)))
+                  offset: .radians(.pi / Double(sides)))
       
       path.move(to: vertices.first!)
       
