@@ -10,10 +10,10 @@ public struct Teardrop: NFiShape {
   
   public var inset: CGFloat = .zero
     
-  /// clamped values between 0...1
+  /// clamped values between 0...1 Default is CGPoint(1,0.5)
   public var variation: CGPoint
   
-  public init(_ variation: CGPoint = CGPoint(x: CGFloat(0.5), y: CGFloat(0.0))) {
+  public init(_ variation: CGPoint = CGPoint(x: CGFloat(1), y: CGFloat(0.5))) {
     let x = variation.x.clamped(to: CGFloat(0.0)...CGFloat(1.0))
     let y = variation.y.clamped(to: CGFloat(0.0)...CGFloat(1.0))
     self.variation = CGPoint(x: x, y: y)
@@ -89,7 +89,7 @@ struct TeardropDemo: View {
                           lineJoin: .round)
           )
         
-          .frame(width: 300, height: 300)
+          .frame(width: 150, height: 300)
           .border(Color.purple)
         Teardrop(CGPoint(x: CGFloat(xValue), y: CGFloat(yValue)))
           .inset(by: 80)
@@ -99,7 +99,7 @@ struct TeardropDemo: View {
                           lineCap: .round,
                           lineJoin: .round)
           )
-          .frame(width: 300, height: 300)
+          .frame(width: 150, height: 300)
           .border(Color.purple)
       }
       Spacer()
