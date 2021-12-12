@@ -13,7 +13,7 @@ public struct Teardrop: NFiShape {
   /// clamped values between 0...1
   public var variation: CGPoint
   
-  public init(_ variation: CGPoint = CGPoint(x: CGFloat(0.5), y: CGFloat(0.5))) {
+  public init(_ variation: CGPoint = CGPoint(x: CGFloat(0.5), y: CGFloat(0.0))) {
     let x = variation.x.clamped(to: CGFloat(0.0)...CGFloat(1.0))
     let y = variation.y.clamped(to: CGFloat(0.0)...CGFloat(1.0))
     self.variation = CGPoint(x: x, y: y)
