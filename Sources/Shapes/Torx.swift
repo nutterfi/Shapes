@@ -17,7 +17,7 @@ public struct Torx: NFiShape {
     
   public init(sides: Int, controlPointRatio: CGFloat = 0.5) {
     self.sides = sides
-    self.controlPointRatio = controlPointRatio.clamped(to: 0...0.5)
+    self.controlPointRatio = controlPointRatio.clamped(to: 0...2.0)
   }
   
   public func path(in rect: CGRect) -> Path {
@@ -26,14 +26,18 @@ public struct Torx: NFiShape {
       let dim = min(insetRect.height, insetRect.width)
       let polygon = ConvexPolygon(sides: sides)
       let vertices = polygon.vertices(in: insetRect)
-      
+      let ratio = controlPointRatio > 0.5 ? 1 - controlPointRatio : controlPointRatio
       let controlPoints = polygon
-        .vertices(in: insetRect
-                    .insetBy(
-                      dx: dim * controlPointRatio,
-                      dy: dim * controlPointRatio
-                    ),
-                  offset: .radians(.pi / Double(sides)))
+        .vertices(
+          in: insetRect
+            .insetBy(
+              dx: dim * ratio,
+              dy: dim * ratio
+            ),
+          offset: .radians(
+            .pi / Double(sides) + (controlPointRatio > 0.5 ? -.pi : 0)
+          )
+        )
       
       path.move(to: vertices.first!)
       
@@ -43,8 +47,6 @@ public struct Torx: NFiShape {
           control: controlPoints[index]
         )
       }
-      
-      path.closeSubpath()
       
     }
   }
@@ -57,21 +59,17 @@ struct TorxDemo: View {
   var body: some View {
     VStack {
       Slider(value: $sides, in: 3...100)
-      Slider(value: $ratio, in: 0.0...0.5)
+      Slider(value: $ratio, in: 0.0...2.0)
 
       Spacer()
       ZStack {
+        Torx(sides: Int(sides), controlPointRatio: 0)
+          .fill(Color.green)
         Torx(sides: Int(sides), controlPointRatio: ratio)
-          .strokeBorder(lineWidth: 3)
-          .frame(width: 300, height: 300)
-          .border(Color.purple)
-        
-        Torx(sides: Int(sides), controlPointRatio: ratio)
-          .inset(by: 100)
-          .strokeBorder(lineWidth: 3)
-          .frame(width: 300, height: 300)
-          .border(Color.purple)
+          .fill(Color.blue)
       }
+      .frame(width: 300, height: 300)
+      .border(Color.purple)
       Spacer()
     }
   }
