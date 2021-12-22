@@ -32,9 +32,9 @@ public struct Spirolateral: NFiShape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let aRect = rect.insetBy(dx: inset, dy: inset)
-      
-      var point = CGPoint(x: aRect.midX, y: aRect.midY)
+      let insetRect = rect.insetBy(dx: inset, dy: inset)
+      let dim = min(insetRect.width, insetRect.height)
+      var point = CGPoint(x: insetRect.midX, y: insetRect.midY)
       path.move(to: point)
       
       var angle: CGFloat = 0
@@ -63,10 +63,12 @@ public struct Spirolateral: NFiShape {
       }
       
       let bounding = path.boundingRect
+      let boundingDim = max(bounding.width, bounding.height)
       
       path = path
-        .offsetBy(dx: aRect.midX - bounding.midX, dy: aRect.midY - bounding.midY)
-        .scale(x: aRect.width / bounding.width, y: aRect.height / bounding.height).path(in: aRect)
+        .offsetBy(dx: insetRect.midX - bounding.midX, dy: insetRect.midY - bounding.midY)
+        .scale(dim / boundingDim)
+        .path(in: insetRect)
     }
   }
 }
