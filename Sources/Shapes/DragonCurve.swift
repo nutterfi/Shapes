@@ -21,10 +21,14 @@ public struct DragonCurve: NFiShape {
   public var angleDegrees: Int = 90
   public var inset: CGFloat = .zero
   
+  public init(steps: Int = 4, angleDegrees: Int = 60) {
+    self.steps = steps
+    self.angleDegrees = angleDegrees
+  }
+  
   public func path(in rect: CGRect) -> Path {
     let insetRect = rect.insetBy(dx: inset, dy: inset)
     let dim = min(insetRect.width, insetRect.height)
-//    let magnitude = dim * 0.1
     
     return Path { path in
       var elements = ""
