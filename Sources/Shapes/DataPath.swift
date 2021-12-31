@@ -11,6 +11,10 @@ import SwiftUI
 public struct DataPath: NFiShape {
   public var inset: CGFloat = .zero
   public var data: [CGFloat]
+  
+  public init(data: [CGFloat]) {
+    self.data = data
+  }
 
   public func path(in rect: CGRect) -> Path {
     Path { path in
