@@ -6,7 +6,7 @@ final class TaperedRectTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(TaperedRect(taper: 5).taper, 5)
+        XCTAssertEqual(TaperedRectangle(taper: 5).taper, 5)
     }
 
     static var allTests = [

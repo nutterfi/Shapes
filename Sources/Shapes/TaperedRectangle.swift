@@ -6,7 +6,7 @@
 
 import SwiftUI
 
-public struct TaperedRect: Polygon {
+public struct TaperedRectangle: Polygon {
   public var inset: CGFloat = .zero
   public var sides: Int = 6
   public var taper: CGFloat = 0
@@ -38,14 +38,17 @@ public struct TaperedRect: Polygon {
   }
 }
 
+@available(*, deprecated, message: "TaperedRect has been renamed to TaperedRectangle")
+typealias TaperedRect = TaperedRectangle
+
 struct TaperedRect_Previews: PreviewProvider {
     static var previews: some View {
       ZStack {
-        TaperedRect(taper: 20)
+        TaperedRectangle(taper: 20)
           .frame(width:200, height:50)
         .foregroundColor(.green)
         
-        TaperedRect(taper: 20)
+        TaperedRectangle(taper: 20)
           .inset(by: 20)
           .frame(width: 200, height: 50)
         .foregroundColor(.red)
