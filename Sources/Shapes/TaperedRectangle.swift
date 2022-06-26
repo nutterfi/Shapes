@@ -39,7 +39,7 @@ public struct TaperedRectangle: Polygon {
 }
 
 @available(*, deprecated, message: "TaperedRect has been renamed to TaperedRectangle")
-typealias TaperedRect = TaperedRectangle
+public typealias TaperedRect = TaperedRectangle
 
 struct TaperedRect_Previews: PreviewProvider {
     static var previews: some View {
