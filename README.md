@@ -65,7 +65,7 @@ SimplePolygon(ratios: [0.33, 0.67, 1])
 ```
 this tells the library to generate a polygon with vertices at 33%, 67%, and 100% distance traveled around the unit circle. (0% starts at the point facing east in the following illustration)
 
-<img src="images/SimplePolygonExample.png" width="200" height="200" />
+<img src="https://user-images.githubusercontent.com/79107267/181698364-85a7b21b-22e1-4c70-baa8-8a7a35590df3.png" width="200" height="200" />
 
 The code used to generate this diagram is
 
@@ -96,7 +96,7 @@ struct SimplePolygon2_Previews: PreviewProvider {
 }
 ```
 
-<img src="images/SimplePolygonExample2.png" width="200" height="200" />
+<img src="https://user-images.githubusercontent.com/79107267/181698606-d1c11da2-8d02-421a-9ec6-e5d5c3825807.png" width="200" height="200" />
 
 NOTE: For non-square frames, the polygon will be rendered in the center of the frame. The unit circle is measured based on the smallest dimension of the `CGRect`:
 
@@ -114,7 +114,7 @@ struct SimplePolygon3_Previews: PreviewProvider {
 }
 ```
 
-<img src="images/SimplePolygonExample3.png" width="400" height="200" />
+<img src="https://user-images.githubusercontent.com/79107267/181698903-ad65fa1a-c1f4-48bb-bdb6-e4848ca1bff4.png" width="400" height="200" />
 
 ### Polygon Example: ConvexPolygon
 
@@ -176,4 +176,4 @@ struct ConvexPolygon_Previews: PreviewProvider {
 }
 ```
 
-<img src="images/ConvexPolygonExample.png" width="200" height="200" />
+<img src="https://user-images.githubusercontent.com/79107267/181699071-9e29604a-cf0c-4a38-b888-5032edf7dac2.png" width="200" height="200" />
