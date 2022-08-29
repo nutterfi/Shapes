@@ -34,6 +34,26 @@ public struct StrokeStyledPolygon: NFiShape {
   /// determines the trimmed portion of the polygon that is drawn
   public var trim: (CGFloat, CGFloat) = (0, 1)
   
+  public init(sides: Int,
+              dashes: Int,
+              density: Int = 1,
+              dashFillRatio: CGFloat = 0.7,
+              lineWidthRatio: CGFloat = 0.01,
+              dashPhaseRatio: CGFloat = 0,
+              lineCap: CGLineCap = .round,
+              lineJoin: CGLineJoin = .miter,
+              trim: (CGFloat, CGFloat) = (0, 1)) {
+    self.sides = sides
+    self.dashes = dashes
+    self.density = density
+    self.dashFillRatio = dashFillRatio
+    self.lineWidthRatio = lineWidthRatio
+    self.dashPhaseRatio = dashPhaseRatio
+    self.lineCap = lineCap
+    self.lineJoin = lineJoin
+    self.trim = trim
+  }
+  
   public func path(in rect: CGRect) -> Path {
     Path { path in
       let insetRect = rect.insetBy(dx: inset, dy: inset)

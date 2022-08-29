@@ -37,6 +37,38 @@ public struct StrokeStyledCircle: NFiShape {
   /// applied with lineWidthRatio to obtain a continuous phase offset across the perimeter of the shape
   public var dashPhaseRatio: CGFloat = 0.0
   
+  public init(numberOfSegments: Int = 4,
+              segmentRatio: CGFloat = 0.9,
+              lineWidthRatio: CGFloat = 0.1,
+              trim: (CGFloat, CGFloat) = (0, 1),
+              dashPhaseRatio: CGFloat = 1.0) {
+    self.numberOfSegments = numberOfSegments
+    self.segmentRatio = segmentRatio
+    self.lineWidthRatio = lineWidthRatio
+    self.trim = trim
+    self.dashPhaseRatio = dashPhaseRatio
+  }
+  
+  public init(
+    numberOfSegments: Int,
+    segmentRatio: CGFloat,
+    lineWidthRatio: CGFloat,
+    trim: (from: CGFloat, to: CGFloat) = (0, 1),
+    lineCap: CGLineCap = .butt,
+    lineJoin: CGLineJoin = .miter,
+    miterLimit: CGFloat = 0,
+    dashPhaseRatio: CGFloat = 0
+  ) {
+    self.numberOfSegments = numberOfSegments
+    self.segmentRatio = segmentRatio
+    self.lineWidthRatio = lineWidthRatio
+    self.trim = trim
+    self.lineCap = lineCap
+    self.lineJoin = lineJoin
+    self.miterLimit = miterLimit
+    self.dashPhaseRatio = dashPhaseRatio
+  }
+  
   public func path(in rect: CGRect) -> Path {
     Path { path in
       let insetRect = rect.insetBy(dx: inset, dy: inset)
