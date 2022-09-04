@@ -26,7 +26,9 @@ public struct StrokeStyledCircle: NFiShape {
   public var dashPattern: [CGFloat]
   
   /// the width of the stroked line as it relates to the frame size
-  public var lineWidthRatio: CGFloat
+  public var lineWidthRatio: CGFloat?
+  
+  public var lineWidth: CGFloat?
   
   /// determines the portion of the circle that is drawn
   public var trim: (from: CGFloat, to: CGFloat)
@@ -43,6 +45,26 @@ public struct StrokeStyledCircle: NFiShape {
   
   /// applied with lineWidthRatio to obtain a continuous phase offset across the perimeter of the shape
   public var dashPhaseRatio: CGFloat = 0.0
+  
+  public init(
+    numberOfSegments: Int = 12,
+    dashPattern: [CGFloat] = [1, 1],
+    lineWidth: CGFloat = 1,
+    trim: (from: CGFloat, to: CGFloat) = (0, 1),
+    lineCap: CGLineCap = .butt,
+    lineJoin: CGLineJoin = .miter,
+    miterLimit: CGFloat = 0,
+    dashPhaseRatio: CGFloat = 0
+  ) {
+    self.numberOfSegments = numberOfSegments
+    self.dashPattern = dashPattern
+    self.lineWidth = lineWidth
+    self.trim = trim
+    self.lineCap = lineCap
+    self.lineJoin = lineJoin
+    self.miterLimit = miterLimit
+    self.dashPhaseRatio = dashPhaseRatio
+  }
   
   public init(
     numberOfSegments: Int = 12,
@@ -74,12 +96,24 @@ public struct StrokeStyledCircle: NFiShape {
       let dashLength: CGFloat = .pi * dim / CGFloat(numberOfSegments)
       
       // A strokeBorder is limited to 50% of the circle diameter
-      let normalLineWidthRatio = lineWidthRatio.clamped(to: 0.0...CGFloat(0.5))
       
-      // strokeRatio depends on path length
-      let strokeRatio: CGFloat = dashLength * (1.0 - normalLineWidthRatio)
+      let strokeWidth: CGFloat
+      let strokeRatio: CGFloat
       
-      let lineWidth = dim * normalLineWidthRatio
+      if let lineWidth = lineWidth {
+        strokeWidth = lineWidth
+        strokeRatio = dashLength * (1 - strokeWidth / dim) //* (lineWidth)
+      } else if let lineWidthRatio = lineWidthRatio {
+        let clampedLineWidthRatio = lineWidthRatio.clamped(to: 0.0...CGFloat(0.5))
+        
+        // strokeRatio depends on path length
+        strokeRatio = dashLength * (1.0 - clampedLineWidthRatio)
+        
+        strokeWidth = dim * clampedLineWidthRatio
+      } else { // this should not happen
+        strokeWidth = 1
+        strokeRatio = 1
+      }
       
       var validatedDashPattern: [CGFloat] = dashPattern
       if dashPattern.count % 2 != 0 , numberOfSegments % 2 != 0 {
@@ -91,7 +125,7 @@ public struct StrokeStyledCircle: NFiShape {
       let normalizedDashPattern = validatedDashPattern.map {$0 * strokeRatio / total }
       
       let style = StrokeStyle(
-        lineWidth: lineWidth,
+        lineWidth: strokeWidth,
         lineCap: lineCap,
         lineJoin: lineJoin,
         dash: normalizedDashPattern,
@@ -100,7 +134,7 @@ public struct StrokeStyledCircle: NFiShape {
       
       // the inset followed by the strokedPath results in a strokeBorder style. The trim placement is required so that the circle border is what is trimmed, rather than the entire shape.
       path = Circle()
-        .inset(by: lineWidth * 0.5)
+        .inset(by: strokeWidth * 0.5)
         .trim(from: trim.0, to: trim.1)
         .path(in: insetRect)
         .strokedPath(style)
@@ -110,12 +144,23 @@ public struct StrokeStyledCircle: NFiShape {
 
 public struct StrokeStyledCircle_Previews: PreviewProvider {
   public static var previews: some View {
-    StrokeStyledCircle(
-      numberOfSegments: 5,
-      dashPattern: [5, 1, 2],
-      lineWidthRatio: 0.2
-    )
-    .frame(width: 256, height: 256)
+    ZStack {
+      StrokeStyledCircle(
+        numberOfSegments: 30,
+        dashPattern: [1, 1],
+        lineWidth: 10
+      )
+      .foregroundColor(.red)
+      .frame(width: 256, height: 256)
+
+      StrokeStyledCircle(
+        numberOfSegments: 15,
+        dashPattern: [1, 1],
+        lineWidthRatio: 0.02
+      )
+      .foregroundColor(.red)
+      .frame(width: 256, height: 256)
+    }
     .previewLayout(.sizeThatFits)
   }
 }
