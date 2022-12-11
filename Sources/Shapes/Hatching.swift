@@ -46,7 +46,21 @@ public struct Hatching: Shape {
   public var lineWidth: CGFloat = 1
   
   private let deltaWidth: CGFloat = 2
-
+  
+  public init(
+    spacing: Double,
+    angle: Angle = .zero,
+    pattern: Pattern = .linear,
+    gradientWidth: Bool = false,
+    lineWidth: CGFloat = 1
+  ) {
+    self.spacing = spacing
+    self.angle = angle
+    self.pattern = pattern
+    self.gradientWidth = gradientWidth
+    self.lineWidth = lineWidth
+  }
+  
   public func path(in rect: CGRect) -> Path {
     Path { path in
       var width: CGFloat = 1
