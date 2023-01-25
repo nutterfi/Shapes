@@ -69,7 +69,7 @@ public struct Hatching: Shape {
       case .linear:
         for x in stride(from: rect.minX, to: rect.maxX, by: spacing) {
           let start = CGPoint(x: x, y: rect.minY)
-          let end = CGPoint(x: x + cos(angle.radians) * rect.height, y: rect.minY + sin(angle.radians) * rect.height)
+          let end = CGPoint(x: x + CGFloat(cos(angle.radians)) * rect.height, y: rect.minY + CGFloat(sin(angle.radians)) * rect.height)
           if gradientWidth {
             var newPath = Path()
             newPath.move(to: start)
@@ -85,7 +85,7 @@ public struct Hatching: Shape {
       case .cross:
         for x in stride(from: rect.minX, to: rect.maxX, by: spacing) {
           let start = CGPoint(x: x, y: rect.minY)
-          let end = CGPoint(x: x + cos(angle.radians) * rect.height, y: rect.minY + sin(angle.radians) * rect.height)
+          let end = CGPoint(x: x + CGFloat(cos(angle.radians)) * rect.height, y: rect.minY + CGFloat(sin(angle.radians)) * rect.height)
           if gradientWidth {
             var newPath = Path()
             newPath.move(to: start)
@@ -101,7 +101,7 @@ public struct Hatching: Shape {
         
         for x in stride(from: rect.minX, to: rect.maxX, by: spacing) {
           let start = CGPoint(x: x, y: rect.minY)
-          let end = CGPoint(x: x - cos(angle.radians) * rect.height, y: rect.minY + sin(angle.radians) * rect.height)
+          let end = CGPoint(x: x - CGFloat(cos(angle.radians)) * rect.height, y: rect.minY + CGFloat(sin(angle.radians)) * rect.height)
           if gradientWidth {
             var newPath = Path()
             newPath.move(to: start)
@@ -117,7 +117,7 @@ public struct Hatching: Shape {
       case .contour(let contour):
         for x in stride(from: rect.minX, to: rect.maxX, by: spacing) {
           let start = CGPoint(x: x, y: rect.minY)
-          let end = CGPoint(x: x + cos(angle.radians) * rect.height, y: rect.minY + sin(angle.radians) * rect.height)
+          let end = CGPoint(x: x + CGFloat(cos(angle.radians)) * rect.height, y: rect.minY + CGFloat(sin(angle.radians)) * rect.height)
           
           if gradientWidth {
             var newPath = Path()
