@@ -38,11 +38,11 @@ public struct CompositeShape<Base, Appendage> : Shape where Base: Shape, Appenda
 }
 
 @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)extension Shape {
-  func adding<appendage: Shape>(_ appendage: appendage) -> CompositeShape<Self, appendage> {
+  public func adding<appendage: Shape>(_ appendage: appendage) -> CompositeShape<Self, appendage> {
     CompositeShape(base: self, appendage: appendage)
   }
   
-  func subtracting<appendage: Shape>(_ appendage: appendage) -> CompositeShape<Self, appendage> {
+  public func subtracting<appendage: Shape>(_ appendage: appendage) -> CompositeShape<Self, appendage> {
     CompositeShape(base: self, appendage: appendage, action: .subtracting)
   }
 }

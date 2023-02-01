@@ -30,8 +30,8 @@ public struct TiledShape<Content: Shape>: Shape {
   }
 }
 
-extension Shape {
-  func tiled(rows: Int, columns: Int) -> TiledShape<Self> {
+public extension Shape {
+  public func tiled(rows: Int, columns: Int) -> TiledShape<Self> {
     TiledShape(shape: self, rows: rows, columns: columns)
   }
 }
@@ -46,7 +46,8 @@ struct TiledShape_Previews: PreviewProvider {
             .foregroundStyle(.white)
             .frame(width: 256, height: 256)
           
-          Circle().adding(StarPolygon(points: 5, density: 2)).tiled(rows: 2, columns: 2)
+          Circle()
+            .tiled(rows: 3, columns: 3)
             
             .opacity(0.5)
             .frame(width: 256, height: 256)

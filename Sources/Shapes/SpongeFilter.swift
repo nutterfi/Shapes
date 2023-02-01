@@ -8,13 +8,13 @@
 import SwiftUI
 
 @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
-struct SpongeFilter<S: Shape, T: Shape>: Shape {
-  var base: S
-  var amount: Int = 100
-  var size: CGFloat = 1.0
-  var stencil: T
+public struct SpongeFilter<S: Shape, T: Shape>: Shape {
+  public var base: S
+  public var amount: Int = 100
+  public var size: CGFloat = 1.0
+  public var stencil: T
   
-  static func randomPositions(number: Int = 100) -> [CGPoint] {
+  public static func randomPositions(number: Int = 100) -> [CGPoint] {
     var positions = [CGPoint]()
     var g = SystemRandomNumberGenerator()
     for _ in 0..<number {
@@ -25,7 +25,7 @@ struct SpongeFilter<S: Shape, T: Shape>: Shape {
     return positions
   }
   
-  func path(in rect: CGRect) -> Path {
+  public func path(in rect: CGRect) -> Path {
     Path { path in
       
       var sponge = Path()
