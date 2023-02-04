@@ -31,7 +31,7 @@ public struct TiledShape<Content: Shape>: Shape {
 }
 
 public extension Shape {
-  public func tiled(rows: Int, columns: Int) -> TiledShape<Self> {
+  func tiled(rows: Int, columns: Int) -> TiledShape<Self> {
     TiledShape(shape: self, rows: rows, columns: columns)
   }
 }

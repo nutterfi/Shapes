@@ -1,17 +1,10 @@
-//
-//  Salinon.swift
-//  
-//
-//  Created by nutterfi on 12/25/21.
-//
-
 import SwiftUI
 
 public struct Salinon: NFiShape {
   
-  public var inset: CGFloat = .zero
-  public var innerDiameterRatio: CGFloat = 0.2
-  public var centered: Bool = false
+  public var inset: CGFloat
+  public var innerDiameterRatio: CGFloat
+  public var centered: Bool
   
   public init(inset: CGFloat = .zero, innerDiameterRatio: CGFloat = 0.2, centered: Bool = false) {
     self.inset = inset
@@ -32,23 +25,25 @@ public struct Salinon: NFiShape {
       let outerDiameterRatio = (1.0 - innerDiameterRatio) * 0.5
       
       let pointB = path.currentPoint!
-
+      
       let EBCenter = CGPoint(x: pointB.x - dim * outerDiameterRatio * 0.5, y: insetRect.midY)
       
       path.addArc(center: EBCenter, radius: dim * outerDiameterRatio * 0.5, startAngle: .zero, endAngle: .radians(.pi), clockwise: true)
-
+      
       // DE arc
       path.addArc(center: center, radius: dim * innerDiameterRatio * 0.5, startAngle: .zero, endAngle: .radians(.pi / 2 ), clockwise: false)
-
+      
       _ = path.currentPoint!  // Point 'F'
-
+      
       path.addArc(center: center, radius: dim * innerDiameterRatio * 0.5, startAngle: .radians(.pi / 2 ), endAngle: .radians(.pi), clockwise: false)
       
       let pointD = path.currentPoint!  // Point 'D'
-
+      
       let ADCenter = CGPoint(x: pointD.x - dim * outerDiameterRatio * 0.5, y: insetRect.midY)
-
+      
       path.addArc(center: ADCenter, radius: dim * outerDiameterRatio * 0.5, startAngle: .zero, endAngle: .radians(.pi), clockwise: true)
+      
+      path.closeSubpath()
       
       if centered {
         let bounding = path.boundingRect
@@ -90,7 +85,7 @@ struct SalinonDemo: View {
         .stroke(Color.red)
         .frame(width: 128, height: 256)
         .border(Color.purple)
-
+      
       Spacer()
     }
   }
