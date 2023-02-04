@@ -1,9 +1,3 @@
-//
-//  StrokeBorderedShape.swift
-//
-//  Created by nutterfi on 10/4/22.
-//
-
 import SwiftUI
 
 extension Shape {
@@ -29,6 +23,12 @@ public struct StrokeBorderedShape<Content: Shape>: Shape {
   
   /// the StrokeStyle to be used when drawing the path
   public var style: StrokeStyle = StrokeStyle()
+  
+  public init(shape: Content, trim: (CGFloat, CGFloat) = (.zero, 1.0), style: StrokeStyle = StrokeStyle()) {
+    self.shape = shape
+    self.trim = trim
+    self.style = style
+  }
   
   public func path(in rect: CGRect) -> Path {
     let insetRect = rect.insetBy(dx: style.lineWidth / 2, dy: style.lineWidth / 2)
