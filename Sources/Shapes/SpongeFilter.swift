@@ -1,18 +1,18 @@
-//
-//  SpongeFilter.swift
-//  Game-UI-Inspirations
-//
-//  Created by nutterfi on 1/12/23.
-//
-
 import SwiftUI
 
 @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 public struct SpongeFilter<S: Shape, T: Shape>: Shape {
   public var base: S
-  public var amount: Int = 100
-  public var size: CGFloat = 1.0
+  public var amount: Int
+  public var size: CGFloat
   public var stencil: T
+  
+  public init(base: S, amount: Int = 100, size: CGFloat = 1.0, stencil: T) {
+    self.base = base
+    self.amount = amount
+    self.size = size
+    self.stencil = stencil
+  }
   
   public static func randomPositions(number: Int = 100) -> [CGPoint] {
     var positions = [CGPoint]()
@@ -51,17 +51,4 @@ public struct SpongeFilter<S: Shape, T: Shape>: Shape {
       path.addPath(Path(difference))
     }
   }
-}
-
-@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
-struct SpongeFilter_Previews: PreviewProvider {
-    static var previews: some View {
-      SpongeFilter(
-        base: Reuleaux.triangle,
-        amount: 100,
-        size: 20,
-        stencil: StarPolygon(points: 5, density: 2))
-      .foregroundStyle(LinearGradient(colors: [.red, .blue], startPoint: .top, endPoint: .bottomTrailing))
-      .frame(width: 256, height: 256)
-    }
 }
