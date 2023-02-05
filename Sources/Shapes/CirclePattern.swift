@@ -1,42 +1,38 @@
-//
-//  CirclePattern.swift
-//  
-//
-//  Created by nutterfi on 12/28/21.
-//
-
 import SwiftUI
 
-/// Generates a repeated pattern of the provided view on a circular path
-public struct CirclePattern<T: View>: View {
-  var pattern: T
-  var repetitions: Int
+/// Generates a repeated pattern of the provided shape on a circular path
+public struct CirclePattern<Content: Shape>: Shape {
+  public var pattern: Content
+  public var repetitions: Int
   
-  public init(pattern: T, repetitions: Int = 10) {
+  public init(pattern: Content, repetitions: Int = 10) {
     self.pattern = pattern
     self.repetitions = repetitions
   }
   
-  public var body: some View {
-    GeometryReader { proxy in
-      let dim = min(proxy.size.width, proxy.size.height)
-      let rect = proxy.frame(in: .local)
+  public func path(in rect: CGRect) -> Path {
+    Path { path in
+      let dim = min(rect.width, rect.height)
+      let scaledDim = dim / CGFloat(repetitions)
+      let insetRect = rect.insetBy(dx: scaledDim * 0.5, dy: scaledDim * 0.5)
       let vertices = ConvexPolygon(
         sides: repetitions)
-        .vertices(in: rect)
+        .vertices(in: insetRect)
       
-      ZStack {
-        ForEach(0..<repetitions) { index in
-          let vertex = vertices[index]
-          let angle = atan2((vertex.y - rect.midY), (vertex.x - rect.midX))
-          
-          pattern
-            .frame(width: dim / CGFloat(repetitions), height: dim / CGFloat(repetitions))
-            .rotationEffect(.radians(angle + CGFloat.pi / 2))
-            .offset(x: -dim * 0.5 + vertex.x, y: -dim * 0.5 + vertex.y)
-        }
+      for n in 0..<repetitions {
+        let vertex = vertices[n]
+        let angle = atan2((vertex.y - rect.midY), (vertex.x - rect.midX))
+        let scaledRect = CGRect(
+          origin: .init(x: -scaledDim * 0.5 + vertex.x, y: -0.5 * scaledDim + vertex.y),
+          size: .init(width: scaledDim, height: scaledDim)
+        )
+        
+        let iPath = pattern.path(in: scaledRect)
+          .rotation(.radians(angle + CGFloat.pi / 2))
+          .path(in: scaledRect)
+        
+        path.addPath(iPath)
       }
-      .frame(width: proxy.size.width, height: proxy.size.height)
     }
   }
 }
@@ -46,19 +42,11 @@ struct CirclePattern_Previews: PreviewProvider {
     ZStack {
       Color.black.ignoresSafeArea()
       Circle()
-        .strokeBorder(Color.orange, lineWidth: 10)
       
-      CirclePattern(pattern: Text("A").font(.system(size: 12)), repetitions: 20)
-        .frame(width: 350, height: 350)
-        .foregroundColor(.orange)
-      
-      CirclePattern(pattern: Reuleaux.triangle, repetitions: 20)
-        .frame(width: 300, height: 300)
-        .foregroundColor(.orange)
-      
-      CirclePattern(pattern: TriquetraView(), repetitions: 5)
-        .frame(width: 200, height: 200)
+      CirclePattern(pattern: Rectangle(), repetitions: 20)
+        .border(Color.red)
         .foregroundColor(.orange)
     }
+    .frame(width: 200, height: 300)
   }
 }
