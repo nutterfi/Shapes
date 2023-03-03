@@ -1,9 +1,3 @@
-//
-//  StrokeStyledCircle.swift
-//
-//  Created by nutterfi on 7/12/21.
-//
-
 import SwiftUI
 
 /// A circle drawn with a stroke border, and a stroke style of equally distributed dashes.
@@ -14,10 +8,6 @@ public struct StrokeStyledCircle: NFiShape {
   
   /// the number of dashes used to stroke the circle path
   public var numberOfSegments: Int
-  
-  /// the percentage of each dash to fill
-  @available(*, deprecated, message: "segmentRatio is deprecated. Please use dashPattern")
-  public var segmentRatio: CGFloat = 0
 
   /// The weighted filled and unfilled regions of a single dash segment
   /// The input is normalized to be applied to each of the numberOfSegments to prevent discontinuities, so it will add up the total number and divide each by that total to get a percentage
@@ -28,6 +18,7 @@ public struct StrokeStyledCircle: NFiShape {
   /// the width of the stroked line as it relates to the frame size
   public var lineWidthRatio: CGFloat?
   
+  /// the width of the stroked line, in points
   public var lineWidth: CGFloat?
   
   /// determines the portion of the circle that is drawn
@@ -41,10 +32,10 @@ public struct StrokeStyledCircle: NFiShape {
   
   /// A threshold used to determine whether to use a bevel instead of a
   /// miter at a join.
-  public var miterLimit: CGFloat = 0
+  public var miterLimit: CGFloat = .zero
   
   /// applied with lineWidthRatio to obtain a continuous phase offset across the perimeter of the shape
-  public var dashPhaseRatio: CGFloat = 0.0
+  public var dashPhaseRatio: CGFloat = .zero
   
   public init(
     numberOfSegments: Int = 12,
@@ -92,7 +83,7 @@ public struct StrokeStyledCircle: NFiShape {
       
       let dim = min(insetRect.width, insetRect.height)
       
-      // Circumference of the circle split into the number of dashes gives the length of a single dash
+      // Circumference of the circle split into the number of dashes gives the length of a single dash (or segment)
       let dashLength: CGFloat = .pi * dim / CGFloat(numberOfSegments)
       
       // A strokeBorder is limited to 50% of the circle diameter
