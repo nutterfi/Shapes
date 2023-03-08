@@ -26,9 +26,8 @@ public struct InvertedShape<Content: Shape>: Shape {
   public func path(in rect: CGRect) -> Path {
     Path { path in
       let insetRect = rect.insetBy(dx: inset, dy: inset)
-      
       let framePath = Path(rect)
-      let shapePath = shape.path(in: insetRect)
+      let shapePath = shape.path(in: insetRect == CGRectNull ? .zero : insetRect)
       let difference = framePath.cgPath.subtracting(shapePath.cgPath)
       
       path.addPath(Path(difference))
@@ -54,7 +53,7 @@ struct InvertedShape_Previews: PreviewProvider {
       
       InvertedShape(shape: Reuleaux.triangle)
         .foregroundStyle(LinearGradient(colors: [.blue, .black], startPoint: .topLeading, endPoint: .bottomTrailing))
-        .opacity(0.8)
+//        .opacity(0.8)
     }
   }
 }
