@@ -15,8 +15,7 @@ public struct CirclePattern<Content: Shape>: Shape {
       let dim = min(rect.width, rect.height)
       let scaledDim = dim / CGFloat(repetitions)
       let insetRect = rect.insetBy(dx: scaledDim * 0.5, dy: scaledDim * 0.5)
-      let vertices = ConvexPolygon(
-        sides: repetitions)
+      let vertices = ConvexPolygon(sides: repetitions)
         .vertices(in: insetRect)
       
       for n in 0..<repetitions {

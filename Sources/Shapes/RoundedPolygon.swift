@@ -21,7 +21,8 @@ public struct RoundedPolygon: Shape {
         let theta = 2 * .pi * CGFloat(n) / CGFloat(pSides)
         let x = radius * cos(theta)
         let y = radius * sin(theta)
-        points.append(.init(x: rect.minX + x + origin.x, y: rect.minY + y + origin.y))
+        points.append(.init(x: x + origin.x, y: y + origin.y))
+
       }
       
       if pCornerRadius == 0 {
@@ -56,6 +57,6 @@ public struct RoundedPolygon: Shape {
 
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
-        RoundedPolygon(sides: 5, cornerRadius: 50)
+        RoundedPolygon(sides: 5, cornerRadius: 40)
     }
 }
