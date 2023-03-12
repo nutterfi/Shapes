@@ -1,9 +1,3 @@
-//
-//  RightKite.swift
-//
-//  Created by nutterfi on 9/6/21.
-//
-
 import SwiftUI
 
 /// A kite where points are placed along a circle
@@ -24,24 +18,23 @@ public struct RightKite: Polygon {
     let origin = CGPoint(x: rect.midX, y: rect.midY)
     
     let theta = .pi * pointRatio
-    let point = CGPoint(x: origin.x + r * cos(theta), y: origin.y + r * sin(theta))
-    let pointPrime = CGPoint(x: origin.x + r * cos(theta), y: origin.y - r * sin(theta))
+    let point = CGPoint(x: origin.x + r * cos(theta - .pi / 2), y: origin.y + r * sin(theta - .pi / 2))
+    let pointPrime = CGPoint(x: origin.x + r * cos(-theta - .pi / 2), y: origin.y + r * sin(-theta - .pi / 2))
     
     return [
-      CGPoint(x: rect.maxX, y: rect.midY),
+      CGPoint(x: origin.x + r * cos(-.pi / 2), y: origin.y + r * sin(-.pi / 2)),
       point,
-      CGPoint(x: rect.minX, y: rect.midY),
+      CGPoint(x: origin.x + r * cos(.pi - .pi/2), y: origin.y + r * sin(.pi - .pi/2)),
       pointPrime
     ]
   }
   
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
+    let insetRect = rect.insetBy(dx: inset, dy: inset)
     return Path { path in
-      path.addLines(vertices(in: aRect))
+      path.addLines(vertices(in: insetRect))
       path.closeSubpath()
     }
-    .rotation(.degrees(-90)).path(in: aRect)
   }
   
 }
@@ -61,13 +54,14 @@ struct RightKite_Previews: PreviewProvider {
   static var previews: some View {
     ZStack {
       Circle().stroke()
-      RightKite(pointRatio: 0.5)
+      RightKite(pointRatio: 0.25)
         .inset(by: 50)
+        .stroke()
       Circle()
         .inset(by: 50)
         .stroke()
 
     }
-    .frame(width: 256, height: 256)
+    .frame(width: 512, height: 256)
   }
 }
