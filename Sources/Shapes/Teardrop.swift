@@ -1,9 +1,3 @@
-//
-//  Teardrop.swift
-//
-//  Created by nutterfi on 4/22/21.
-//
-
 import SwiftUI
 
 public struct Teardrop: NFiShape {
@@ -21,18 +15,16 @@ public struct Teardrop: NFiShape {
   
   public func path(in rect: CGRect) -> Path {
     let insetRect = rect.insetBy(dx: inset, dy: inset)
-    
     let dim = min(insetRect.width, insetRect.height)
-    let midPoint = CGPoint(x: insetRect.midX, y: insetRect.midY)
     let origin = CGPoint(x: insetRect.midX, y: insetRect.minY)
     
     let controlPoint1 = CGPoint(
-      x: insetRect.midX + insetRect.width * 0.5 * variation.x,
+      x: insetRect.midX + dim * 0.5 * variation.x,
       y: insetRect.minY + insetRect.height * 0.5 * variation.y
     )
     
     let controlPoint2 = CGPoint(
-      x: insetRect.midX - insetRect.width * 0.5 * variation.x,
+      x: insetRect.midX - dim * 0.5 * variation.x,
       y: insetRect.minY + insetRect.height * 0.5 * variation.y
     )
     
@@ -42,13 +34,13 @@ public struct Teardrop: NFiShape {
       path.addQuadCurve(
         to: CGPoint(
           x: insetRect.midX + dim * 0.5,
-          y: insetRect.midY
+          y: insetRect.maxY - dim * 0.5
         ),
         control: controlPoint1
       )
       
       path.addArc(
-        center: midPoint,
+        center: .init(x: insetRect.midX, y: insetRect.maxY - dim * 0.5),
         radius: dim * 0.5,
         startAngle: .zero,
         endAngle: Angle(radians: .pi),
@@ -59,13 +51,7 @@ public struct Teardrop: NFiShape {
         control: controlPoint2
       )
       
-      let bounding = path.boundingRect
-      
-      path = path
-        .offsetBy(dx: insetRect.midX - bounding.midX, dy: insetRect.midY - bounding.midY)
-      
       path.closeSubpath()
-      
     }
   }
   

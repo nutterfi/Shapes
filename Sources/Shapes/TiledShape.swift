@@ -7,8 +7,8 @@ public struct TiledShape<Content: Shape>: Shape {
   
   public init(shape: Content, rows: Int = 1, columns: Int = 1) {
     self.shape = shape
-    self.rows = rows
-    self.columns = columns
+    self.rows = abs(rows)
+    self.columns = abs(columns)
   }
   
   public func path(in rect: CGRect) -> Path {
