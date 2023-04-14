@@ -7,7 +7,10 @@ public struct Triquetra: NFiShape {
   /// the points on the triquetra will follow a circle inscribed in the path if not centered
   public var centered = false
   
-  public init(_ inset: CGFloat = .zero, centered: Bool = false) {
+  public var strokeStyle: StrokeStyle
+  
+  public init(strokeStyle: StrokeStyle = .init(), inset: CGFloat = .zero, centered: Bool = false) {
+    self.strokeStyle = strokeStyle
     self.inset = inset
     self.centered = centered
   }
@@ -45,6 +48,8 @@ public struct Triquetra: NFiShape {
           .path(in: insetRect)
       }
       
+      path = path.strokedPath(strokeStyle)
+      
     }
   }
   
@@ -52,14 +57,14 @@ public struct Triquetra: NFiShape {
 
 @available(*, deprecated, message: "Use Triquetra instead. TriquetraView will be removed in a later release")
 public struct TriquetraView: View {
-  public var lineWidth: CGFloat
+  public var strokeStyle: StrokeStyle
   
-  public init(lineWidth: CGFloat = 1) {
-    self.lineWidth = lineWidth
+  public init(strokeStyle: StrokeStyle = .init()) {
+    self.strokeStyle = strokeStyle
   }
   
   public var body: some View {
-    Triquetra().stroke(lineWidth: lineWidth)
+    Triquetra(strokeStyle: strokeStyle)
   }
 }
 
@@ -67,8 +72,13 @@ struct Triquetra_Previews: PreviewProvider {
     static var previews: some View {
       ZStack {
         Circle().stroke()
-        TriquetraView(lineWidth: 2)
+        TriquetraView()
           .foregroundColor(Color.red.opacity(0.4))
+        let lineWidth = 5.0
+        
+        Triquetra(strokeStyle: .init(lineWidth: lineWidth, lineCap: .round, lineJoin: .round, miterLimit: 0, dash: [10, 5, 2]))
+          .inset(by: lineWidth / 2)
+          
       }
       .frame(width: 128, height: 256)
     }
