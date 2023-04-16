@@ -20,3 +20,12 @@ public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
 public func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
 }
+
+/// Multiplies the components of the CGPoint by a factor
+/// - Parameters:
+///   - lhs: the CGPoint
+///   - rhs: the factor
+/// - Returns: a scaled CGPoint
+public func *(lhs: CGPoint, rhs: CGFloat) -> CGPoint {
+  CGPoint(x: lhs.x * rhs, y: lhs.y * rhs)
+}
