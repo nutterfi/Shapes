@@ -29,3 +29,20 @@ public func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
 public func *(lhs: CGPoint, rhs: CGFloat) -> CGPoint {
   CGPoint(x: lhs.x * rhs, y: lhs.y * rhs)
 }
+
+public extension CGRect {
+  /// The minimum point in both x and y dimensions
+  var min: CGPoint {
+    .init(x: minX, y: minY)
+  }
+  
+  /// The middle point in both x and y dimensions
+  var mid: CGPoint {
+    .init(x: midX, y: midY)
+  }
+  
+  /// The maximum point in both x and y dimensions
+  var max: CGPoint {
+    .init(x: maxX, y: maxY)
+  }
+}

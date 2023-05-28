@@ -4,7 +4,7 @@ public struct RoundedPolygon: Shape {
   public let sides: Int
   public var cornerRadius: CGFloat = 0
   
-  public init(sides: Int, cornerRadius: CGFloat) {
+  public init(sides: Int, cornerRadius: CGFloat = 0) {
     self.sides = sides
     self.cornerRadius = cornerRadius
   }
