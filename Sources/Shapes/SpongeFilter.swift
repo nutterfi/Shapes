@@ -2,9 +2,13 @@ import SwiftUI
 
 @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 public struct SpongeFilter<S: Shape, T: Shape>: Shape {
+  /// original Shape
   public var base: S
+  /// number of sponge "holes"
   public var amount: Int
+  /// size of the sponge holes
   public var size: CGFloat
+  /// shape of the sponge hole
   public var stencil: T
   
   public init(base: S, amount: Int = 100, size: CGFloat = 1.0, stencil: T) {
@@ -14,13 +18,11 @@ public struct SpongeFilter<S: Shape, T: Shape>: Shape {
     self.stencil = stencil
   }
   
-  public static func randomPositions(number: Int = 100) -> [CGPoint] {
+  public func randomPositions(number: Int = 100) -> [CGPoint] {
     var positions = [CGPoint]()
-    var g = SystemRandomNumberGenerator()
+    var g = SeededRandomNumberGenerator()
     for _ in 0..<number {
-      let x = CGFloat.random(in: 0...1, using: &g)
-      let y = CGFloat.random(in: 0...1, using: &g)
-      positions.append(CGPoint(x: x, y: y))
+      positions.append(g.randomPoint())
     }
     return positions
   }
@@ -29,7 +31,7 @@ public struct SpongeFilter<S: Shape, T: Shape>: Shape {
     Path { path in
       
       var sponge = Path()
-      Self.randomPositions(number: amount).forEach { position in
+      randomPositions(number: amount).forEach { position in
         let width = position.x * rect.width
         let height = position.y * rect.height
         sponge.addPath(
