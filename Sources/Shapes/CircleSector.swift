@@ -2,10 +2,16 @@ import SwiftUI
 
 /// A circular sector, whose center lies in the center of the frame
 public struct CircleSector: Shape {
+  /// The starting angle of the sector
   public var startAngle: Angle
+  
+  /// The ending angle of the sector
   public var endAngle: Angle
+  
+  /// Whether to draw the sector clockwise
   public var clockwise: Bool = true
   
+  /// Creates a new sector
   public init(startAngle: Angle, endAngle: Angle, clockwise: Bool = true) {
     self.startAngle = startAngle
     self.endAngle = endAngle
@@ -21,7 +27,7 @@ public struct CircleSector: Shape {
         radius: radius,
         startAngle: startAngle,
         endAngle: endAngle,
-        clockwise: clockwise
+        clockwise: !clockwise // SwiftUI coordinate system
       )
       path.closeSubpath()
     }
@@ -30,6 +36,7 @@ public struct CircleSector: Shape {
 
 struct CircleSector_Previews: PreviewProvider {
     static var previews: some View {
-      CircleSector(startAngle: .zero, endAngle: .radians(.pi))
+      CircleSector(startAngle: .zero, endAngle: .radians(.pi / 2))
+        .padding()
     }
 }

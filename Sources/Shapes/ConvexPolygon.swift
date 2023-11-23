@@ -1,24 +1,21 @@
-//
-//  ConvexPolygon.swift
-//
-//  Created by nutterfi on 1/19/21.
-//
-
 import SwiftUI
 
+/// A convex regular polygon
 public struct ConvexPolygon: RegularPolygon {
+  /// The number of polygon sides
   public var sides: Int
   
+  /// The inset amount of the polygon
   public var inset: CGFloat = .zero
   
+  /// Creates a new convex polygon
   public init(sides: Int) {
     self.sides = abs(sides)
   }
   
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-    return Path { path in
-      path.addLines(vertices(in: aRect))
+    Path { path in
+      path.addLines(vertices(in: rect.insetBy(dx: inset, dy: inset)))
       path.closeSubpath()
     }
   }
@@ -50,9 +47,12 @@ struct ConvexPolygon_Previews: PreviewProvider {
         
         let vertices = ConvexPolygon(sides: 7)
           .vertices(in: CGRect(x: 0, y: 0, width: 256, height: 256))
+        
         ForEach(0..<vertices.count, id: \.self) { index in
           let vertex = vertices[index]
-          Circle().frame(width:10).offset(x: -128 + vertex.x, y: -128 + vertex.y)
+          Circle()
+            .frame(width:10)
+            .offset(x: -128 + vertex.x, y: -128 + vertex.y)
         }
         
       }

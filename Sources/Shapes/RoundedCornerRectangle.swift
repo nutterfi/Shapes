@@ -1,16 +1,31 @@
 import SwiftUI
 
+/// A rectangle with user-defined rounded corners.
+@available(iOS, introduced: 15.0, deprecated: 16.0, message: "Use UnevenRoundedRectangle instead.")
+@available(macOS, introduced: 12.0, deprecated: 14.0, message: "Use UnevenRoundedRectangle instead.")
+@available(tvOS, introduced: 15.0, deprecated: 16.0, message: "Use UnevenRoundedRectangle instead.")
+@available(watchOS, introduced: 8.0, deprecated: 10.0, message: "Use UnevenRoundedRectangle instead.")
+@available(visionOS, deprecated: 1.0, message: "Use UnevenRoundedRectangle instead.")
 public struct RoundedCornerRectangle: NFiShape {
   
-  public enum Corner {
+  /// The defined corners of the rectangle
+  public enum Corner : Sendable {
     case topLeft, topRight, bottomLeft, bottomRight
   }
   
+  /// Defines which corners are applied with a corner radius
   public var corners: [Corner]
+  
+  /// The inset value
   public var inset: CGFloat = .zero
   
+  /// The corner radius
   public var cornerRadius: CGFloat
   
+  /// Creates a new rounded corner rectangle
+  /// - Parameters:
+  ///   - cornerRadius: The corner radius to apply to the specified corners
+  ///   - corners: the corners to apply the corner radius
   public init(cornerRadius: CGFloat, corners: [Corner] = [.topLeft, .topRight, .bottomLeft, .bottomRight]) {
     self.cornerRadius = cornerRadius
     self.corners = corners
@@ -48,7 +63,6 @@ public struct RoundedCornerRectangle: NFiShape {
       } else {
         path.addLine(to: CGPoint(x: insetRect.maxX, y: insetRect.maxY))
       }
-      
       
       // draw line left
       path.addLine(to: CGPoint(x: insetRect.minX + CGFloat(safeCornerRadius), y: insetRect.maxY))

@@ -1,29 +1,30 @@
-//
-//  Bullet.swift
-//  
-//
-//  Created by nutterfi on 2/23/21.
-//
-
 import SwiftUI
 
+/// A bullet shape that faces to the right
 public struct Bullet: Polygon {
   
+  /// The inset amount applied to the bullet
   public var inset: CGFloat = .zero
+  
+  /// Controls the sharpness of the bullet.
   public var taper: CGFloat = .zero
+  
+  /// The number of sides (inherited from Polygon).
   public var sides: Int = 5
 
+  /// Creates a new bullet shape.
   public init(taper: CGFloat) {
     self.taper = abs(taper)
   }
   
+  // MARK: Polygon
+  
   public func vertices(in rect: CGRect) -> [CGPoint] {
     let width = rect.size.width
     let value = min(taper, width / 2.0)
-    
+
     return [
       CGPoint(x: rect.minX, y: rect.minY),
-      CGPoint(x: rect.minX + value, y: rect.minY),
       CGPoint(x: rect.maxX - value, y: rect.minY),
       CGPoint(x: rect.maxX, y: rect.midY),
       CGPoint(x: rect.maxX - value, y: rect.maxY),
