@@ -5,7 +5,7 @@
 This Swift package can be used to easily build SwiftUI shapes that conform to the `Shape` protocol. Most of the well-known shapes are in here, and some not-so-well-known shapes are here too!
 
 ## Requirements
-Shapes requires a minimum of macOS 11, iOS 14, and tvOS 14.
+Shapes requires a minimum of macOS 12, iOS 15, and tvOS 15.
 
 ## Under construction
 
