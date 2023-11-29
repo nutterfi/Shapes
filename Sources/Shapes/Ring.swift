@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// A circular line that supports styling via StrokeStyle
+/// An inset circular shape that supports styling via StrokeStyle.
+/// This shape is an alternative to using `strokeBorder(style:antialiased:)` on `Circle`.
 public struct Ring: Shape {
   /// pass in a style with lineWidth, dash and dash phase elements
   /// the input line width is used to inset properly
@@ -18,6 +19,11 @@ public struct Ring: Shape {
         .strokedPath(theStyle)
       path.addPath(circlePath)
     }
+  }
+  
+  @available(iOS 16.0, *)
+  public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
+    Circle().sizeThatFits(proposal)
   }
   
   /// Computes the required StrokeStyle to apply to the Path
@@ -38,7 +44,7 @@ public struct Ring: Shape {
       // normalized dash pattern
       let sum = dash.reduce(0, +)
       dash = dash.map {$0 * circumference / (sum * count)}
-      dashPhase = dashPhase * circumference / (sum * count)
+      dashPhase = dashPhase * circumference
     }
     
     return StrokeStyle(
@@ -60,8 +66,7 @@ struct RingExample: View {
   let size: Double = 128
 
   var body: some View {
-    VStack(spacing: 30) {
-      
+    VStack(spacing: 20) {
       Text("Ring Example")
         .font(.headline)
       
@@ -75,7 +80,6 @@ struct RingExample: View {
           
           Circle()
             .stroke(style: StrokeStyle(lineWidth: 12, dash: dash))
-            .frame(width: size, height: size)
             .border(Color.red.opacity(0.2))
         }
         
@@ -84,7 +88,6 @@ struct RingExample: View {
             .font(.caption)
           
           Ring(style: StrokeStyle(lineWidth: 12, dash: dash))
-            .frame(width: size, height: size)
             .border(Color.red.opacity(0.2))
         }
         
@@ -92,22 +95,28 @@ struct RingExample: View {
       
       // Show the effect of an increasing repeat count
       ScrollView {
-        ForEach(1..<20, id: \.self) { count in
-          Text("Ring repeat count: \(count)")
-            .font(.caption)
-          
-          Ring(style: StrokeStyle(lineWidth: 50, dash: dash), repeatCount: Double(count))
-            .fill(LinearGradient(colors: [.green, .yellow], startPoint: .leading, endPoint: .trailing))
-            .frame(width: size, height: size)
-            .border(Color.red.opacity(0.2))
+        LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
+          ForEach(1..<20, id: \.self) { count in
+            VStack {
+              Text("Ring repeat count: \(count)")
+                .font(.caption)
+              
+              Ring(
+                style: StrokeStyle(lineWidth: 12, dash: dash),
+                repeatCount: Double(count)
+              )
+                .fill(LinearGradient(colors: [.green, .yellow], startPoint: .leading, endPoint: .trailing))
+                .border(Color.red.opacity(0.2))
+            }
+            
+          }
         }
       }
     }
-    .padding(.vertical, 20)
+    .padding(20)
   }
 }
 
 #Preview {
   RingExample()
 }
-
