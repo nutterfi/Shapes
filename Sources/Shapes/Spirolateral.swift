@@ -87,14 +87,13 @@ extension Spirolateral: Animatable {
 
 struct Spirolateral_Previews: PreviewProvider {
   static var previews: some View {
-    ZStack {
+    HStack {
       Spirolateral()
         .fill(Color.red)
       Spirolateral()
-        .inset(by: 200)
+        .inset(by: 50)
         .stroke(lineWidth: 5)
         .border(Color.purple)
     }
-    .previewDevice("iPad Pro (12.9-inch) (5th generation)")
   }
 }

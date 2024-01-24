@@ -71,9 +71,21 @@ public struct DragonCurve: NFiShape {
 
 struct DragonCurve_Previews: PreviewProvider {
   static var previews: some View {
-    DragonCurve(steps: 8)
-    .stroke(Color.purple)
-    .frame(width: 256, height: 256)
-    .border(Color.purple)
+    VStack {
+      DragonCurve(steps: 8)
+      .stroke(Color.purple)
+      .frame(width: 256, height: 128)
+      .border(Color.purple)
+      
+      DragonCurve(steps: 8)
+      .stroke(Color.purple)
+      .frame(width: 128, height: 128)
+      .border(Color.purple)
+      
+      DragonCurve(steps: 8)
+      .stroke(Color.purple)
+      .frame(width: 64, height: 256)
+      .border(Color.purple)
+    }
   }
 }
