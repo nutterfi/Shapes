@@ -1,10 +1,3 @@
-//
-//  Check.swift
-//  book-swiftui-shapes-examples
-//
-//  Created by nutterfi on 10/31/23.
-//
-
 import SwiftUI
 
 /// A checkered pattern
@@ -50,13 +43,13 @@ struct Check: Shape {
 
 struct CheckExample: View {
   var body: some View {
-    Example(title: "Check Example") {
+    VStack {
       VStack(spacing: 20) {
         Text("Checkerboard")
           .bold()
         
         Check(rows: 8, columns: 8)
-//          .background { Color.red }
+          .background { Color.red }
           .frame(width: 256, height: 256)
           .border(Color.black)
         
