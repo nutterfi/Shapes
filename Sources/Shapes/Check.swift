@@ -1,11 +1,23 @@
 import SwiftUI
 
 /// A checkered pattern
-struct Check: Shape {
-  var rows: Int
-  var columns: Int
+public struct Check: Shape {
+  /// The number of rows in the pattern
+  public var rows: Int
   
-  func path(in rect: CGRect) -> Path {
+  /// The number of columns in the pattern
+  public var columns: Int
+  
+  /// Constructs a new check pattern
+  /// - Parameters:
+  ///   - rows: The number of rows
+  ///   - columns: The number of columns
+  public init(rows: Int, columns: Int) {
+    self.rows = rows
+    self.columns = columns
+  }
+  
+  public func path(in rect: CGRect) -> Path {
     Path { path in
       let width = rect.width / CGFloat(columns)
       let height = rect.height / CGFloat(rows)
@@ -41,37 +53,37 @@ struct Check: Shape {
   }
 }
 
-struct CheckExample: View {
-  var body: some View {
-    VStack {
-      VStack(spacing: 20) {
-        Text("Checkerboard")
-          .bold()
-        
-        Check(rows: 8, columns: 8)
-          .background { Color.red }
-          .frame(width: 256, height: 256)
-          .border(Color.black)
-        
-        Text("Transparency Layer")
-          .bold()
-        
-        Check(rows: 12, columns: 12)
-          .foregroundStyle(Color.gray)
-          .background { Color.white }
-          .overlay {
-            Image(systemName: "swift")
-              .resizable()
-              .scaledToFit()
-          }
-          .frame(width: 256, height: 256)
-          .border(Color.black)
+#Preview("Check") {
+  struct CheckExample: View {
+    var body: some View {
+      VStack {
+        VStack(spacing: 20) {
+          Text("Checkerboard")
+            .bold()
+          
+          Check(rows: 8, columns: 8)
+            .background { Color.red }
+            .frame(width: 256, height: 256)
+            .border(Color.black)
+          
+          Text("Transparency Layer")
+            .bold()
+          
+          Check(rows: 12, columns: 12)
+            .foregroundStyle(Color.gray)
+            .background { Color.white }
+            .overlay {
+              Image(systemName: "swift")
+                .resizable()
+                .scaledToFit()
+            }
+            .frame(width: 256, height: 256)
+            .border(Color.black)
+        }
+        Spacer()
       }
-      Spacer()
     }
   }
-}
-
-#Preview("Check") {
-  CheckExample()
+  
+  return CheckExample()
 }

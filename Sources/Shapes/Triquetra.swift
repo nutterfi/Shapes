@@ -1,17 +1,24 @@
 import SwiftUI
 
+/// A triquetra shape.
 public struct Triquetra: NFiShape {
+  /// The inset of the shape.
   public var inset: CGFloat = .zero
   
-  /// whether to center the Triquetra in the frame
-  /// the points on the triquetra will follow a circle inscribed in the path if not centered
+  /// Whether to center the Triquetra in the frame.
+  /// The points on the triquetra will follow a circle inscribed in the path if not centered
   public var centered = false
   
+  /// The style applied to the shape.  Uses the default initializer if not specified.
   public var strokeStyle: StrokeStyle
   
-  public init(strokeStyle: StrokeStyle = .init(), inset: CGFloat = .zero, centered: Bool = false) {
+  /// Constructs a new triquetra shape.
+  /// - Parameters:
+  ///   - strokeStyle: The style applied to the shape.  Uses the default initializer if not specified.
+  ///   - centered: Whether to center the Triquetra in the frame.
+  public init(strokeStyle: StrokeStyle = StrokeStyle(), centered: Bool = false) {
     self.strokeStyle = strokeStyle
-    self.inset = inset
+    inset = .zero
     self.centered = centered
   }
   
@@ -53,33 +60,42 @@ public struct Triquetra: NFiShape {
     }
   }
   
-}
-
-@available(*, deprecated, message: "Use Triquetra instead. TriquetraView will be removed in a later release")
-public struct TriquetraView: View {
-  public var strokeStyle: StrokeStyle
-  
-  public init(strokeStyle: StrokeStyle = .init()) {
-    self.strokeStyle = strokeStyle
+  @available(iOS 16.0, *)
+  public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
+    Circle().sizeThatFits(proposal)
   }
   
-  public var body: some View {
-    Triquetra(strokeStyle: strokeStyle)
-  }
 }
 
 struct Triquetra_Previews: PreviewProvider {
     static var previews: some View {
-      ZStack {
-        Circle().stroke()
-        TriquetraView()
-          .foregroundColor(Color.red.opacity(0.4))
+      HStack {
         let lineWidth = 5.0
+        let style = StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round, miterLimit: 0, dash: [10, 5, 2])
         
-        Triquetra(strokeStyle: .init(lineWidth: lineWidth, lineCap: .round, lineJoin: .round, miterLimit: 0, dash: [10, 5, 2]))
-          .inset(by: lineWidth / 2)
-          
+        VStack {
+          Text("Not Centered")
+          Triquetra(strokeStyle: style)
+            .inset(by: lineWidth / 2)
+            .background {
+              Circle()
+                .stroke(Color.blue.opacity(0.4))
+            }
+          .border(Color.red)
+        }
+        
+        VStack {
+          Text("Centered")
+          Triquetra(strokeStyle: style, centered: true)
+            .inset(by: lineWidth / 2)
+            .background {
+              Circle()
+                .stroke(Color.blue.opacity(0.4))
+            }
+          .border(Color.red)
+        }
+        
       }
-      .frame(width: 128, height: 256)
+      .padding()
     }
 }

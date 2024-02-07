@@ -7,8 +7,17 @@ public struct Ring: Shape {
   /// the input line width is used to inset properly
   public var style: StrokeStyle = StrokeStyle()
 
-  /// How many times to repeat the pattern. A nonzero value normalizes the dash patterns to the size of the Ring
+  /// The number of pattern repeats around the ring. A nonzero value normalizes the dash patterns to the size of the Ring
   public var repeatCount: Double = .zero
+  
+  /// Constructs a new ring shape
+  /// - Parameters:
+  ///   - style: The `StrokeStyle` to apply to the pattern. Uses the default initializer if not specified.
+  ///   - repeatCount: The number of pattern repeats around the ring. Defaults to zero. A nonzero value normalizes the dash patterns to the size of the Ring
+  public init(style: StrokeStyle = StrokeStyle(), repeatCount: Double = .zero) {
+    self.style = style
+    self.repeatCount = repeatCount
+  }
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
@@ -58,65 +67,65 @@ public struct Ring: Shape {
   
 }
 
-/// Showcases Ring and compares it to a Circle equivalent
-struct RingExample: View {
-  /// The dash pattern applied to each style
-  let dash: [CGFloat] = [14, 2, 5, 8]
-  
-  let size: Double = 128
 
-  var body: some View {
-    VStack(spacing: 20) {
-      Text("Ring Example")
-        .font(.headline)
-      
-      Text("dash: \(String(describing: dash))")
-        .font(.subheadline)
-      
-      HStack(spacing: 20) {
-        VStack {
-          Text("Circle")
-            .font(.caption)
-          
-          Circle()
-            .stroke(style: StrokeStyle(lineWidth: 12, dash: dash))
-            .border(Color.red.opacity(0.2))
-        }
+#Preview {
+  /// Showcases Ring and compares it to a Circle equivalent
+  struct RingExample: View {
+    /// The dash pattern applied to each style
+    let dash: [CGFloat] = [14, 2, 5, 8]
+    
+    let size: Double = 128
+
+    var body: some View {
+      VStack(spacing: 20) {
+        Text("Ring Example")
+          .font(.headline)
         
-        VStack {
-          Text("Ring")
-            .font(.caption)
-          
-          Ring(style: StrokeStyle(lineWidth: 12, dash: dash))
-            .border(Color.red.opacity(0.2))
-        }
+        Text("dash: \(String(describing: dash))")
+          .font(.subheadline)
         
-      }
-      
-      // Show the effect of an increasing repeat count
-      ScrollView {
-        LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
-          ForEach(1..<20, id: \.self) { count in
-            VStack {
-              Text("Ring repeat count: \(count)")
-                .font(.caption)
-              
-              Ring(
-                style: StrokeStyle(lineWidth: 12, dash: dash),
-                repeatCount: Double(count)
-              )
-                .fill(LinearGradient(colors: [.green, .yellow], startPoint: .leading, endPoint: .trailing))
-                .border(Color.red.opacity(0.2))
-            }
+        HStack(spacing: 20) {
+          VStack {
+            Text("Circle")
+              .font(.caption)
             
+            Circle()
+              .stroke(style: StrokeStyle(lineWidth: 12, dash: dash))
+              .border(Color.red.opacity(0.2))
+          }
+          
+          VStack {
+            Text("Ring")
+              .font(.caption)
+            
+            Ring(style: StrokeStyle(lineWidth: 12, dash: dash))
+              .border(Color.red.opacity(0.2))
+          }
+          
+        }
+        
+        // Show the effect of an increasing repeat count
+        ScrollView {
+          LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
+            ForEach(1..<20, id: \.self) { count in
+              VStack {
+                Text("Ring repeat count: \(count)")
+                  .font(.caption)
+                
+                Ring(
+                  style: StrokeStyle(lineWidth: 12, dash: dash),
+                  repeatCount: Double(count)
+                )
+                  .fill(LinearGradient(colors: [.green, .yellow], startPoint: .leading, endPoint: .trailing))
+                  .border(Color.red.opacity(0.2))
+              }
+              
+            }
           }
         }
       }
+      .padding(20)
     }
-    .padding(20)
   }
-}
-
-#Preview {
-  RingExample()
+  return RingExample()
 }
