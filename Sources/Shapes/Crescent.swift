@@ -8,9 +8,21 @@ import SwiftUI
 
 // FIXME: This is more like a pseudo-crescent shape. Maybe even a boomerang? I'd like to add the ability to modify the curves
 public struct Crescent: NFiShape {
+  /// The inset of the shape.
   public var inset: CGFloat = .zero
   
-  public init() {}
+  /// The offset of the circle that creates the crescent effect
+  public var offset: UnitPoint
+  
+  /// Creates a new crescent shape.
+  public init(offset: UnitPoint = UnitPoint(x: 0.2, y: 0)) {
+    self.offset = offset
+  }
+  
+  @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+  public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
+    Circle().sizeThatFits(proposal)
+  }
   
   public func path(in rect: CGRect) -> Path {
     let aRect = rect.insetBy(dx: inset, dy: inset)

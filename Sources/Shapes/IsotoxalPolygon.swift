@@ -40,7 +40,7 @@ public struct IsotoxalPolygon: Polygon {
     }
   }
   
-  @available(iOS 16.0, *)
+  @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
   }
