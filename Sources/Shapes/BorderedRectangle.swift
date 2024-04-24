@@ -12,10 +12,15 @@ import SwiftUI
 public struct BorderedRectangle: Shape {
   /// pass in a style with lineWidth, dash and dash phase elements
   /// the input line width is used to inset properly
-  public var style: StrokeStyle = StrokeStyle()
+  public var style: StrokeStyle
 
   /// How many times to repeat the pattern. A nonzero value normalizes the dash patterns to the size of the BorderedRectangle
-  public var repeatCount: Double = .zero
+  public var repeatCount: Double
+  
+  public init(style: StrokeStyle = StrokeStyle(), repeatCount: Double = .zero) {
+    self.style = style
+    self.repeatCount = repeatCount
+  }
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
@@ -28,7 +33,7 @@ public struct BorderedRectangle: Shape {
     }
   }
   
-  @available(iOS 16.0, *)
+  @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Rectangle().sizeThatFits(proposal)
   }
@@ -63,89 +68,6 @@ public struct BorderedRectangle: Shape {
   
 }
 
-/// Showcases BorderedRectangle and compares it to a Circle equivalent
-struct BorderedRectangleExample: View {
-  @State private var phase: CGFloat = .zero
-  /// The dash pattern applied to each style
-  let dash: [CGFloat] = [1, 1]
-  
-  let size: Double = 128
-
-  var body: some View {
-    VStack(spacing: 20) {
-      Text("BorderedRectangle Example")
-        .font(.headline)
-      Slider(value: $phase, in: 0...1)
-      Text("dash: \(String(describing: dash))")
-        .font(.subheadline)
-      
-      HStack(spacing: 20) {
-        VStack {
-          Text("Rectangle")
-            .font(.caption)
-          
-          Rectangle()
-            .stroke(style: StrokeStyle(
-              lineWidth: 1, lineCap: .round,
-              lineJoin: .round,
-              dash: dash, 
-              dashPhase: phase)
-            )
-            .border(Color.red.opacity(0.2))
-            .aspectRatio(0.75, contentMode: .fit)
-        }
-        
-        VStack {
-          Text("BorderedRectangle")
-            .font(.caption)
-          
-          BorderedRectangle(style: StrokeStyle(
-            lineWidth: 1,
-            lineCap: .square,
-            lineJoin: .round,
-            dash: dash,
-            dashPhase: phase)
-          )
-            .border(Color.red.opacity(0.2))
-            .aspectRatio(0.75, contentMode: .fit)
-        }
-        
-      }
-      
-      
-      // Show the effect of an increasing repeat count
-      ScrollView {
-        LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
-          ForEach(1..<19, id: \.self) { count in
-            VStack {
-              Text("BorderedRectangle repeat count: \(count)")
-                .font(.caption)
-              
-              BorderedRectangle(
-                style: StrokeStyle(
-                  lineWidth: 12,
-                  lineCap: .square,
-                  lineJoin: .round,
-                  dash: dash,
-                  dashPhase: phase),
-                repeatCount: Double(count)
-              )
-                .fill(LinearGradient(colors: [.green, .yellow], startPoint: .leading, endPoint: .trailing))
-                .border(Color.red.opacity(0.2))
-                .aspectRatio(0.75, contentMode: .fit)
-            }
-            
-          }
-          
-        }
-        
-      }
-      
-    }
-    .padding(20)
-  }
-}
-
 #Preview {
-  BorderedRectangleExample()
+  BorderedRectangle()
 }
