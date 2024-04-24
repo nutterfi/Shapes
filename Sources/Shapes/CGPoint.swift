@@ -1,8 +1,24 @@
-import CoreGraphics
+import SwiftUI
 
 public extension CGPoint {
-  func offsetBy(x: CGFloat, y: CGFloat) -> CGPoint {
-    CGPoint(x: self.x + x, y: self.y + y)
+  
+  /// Returns a new point located at an offset from the current point
+  func offsetBy(dx: CGFloat, dy: CGFloat) -> CGPoint {
+    CGPoint(x: x + dx, y: y + dy)
+  }
+  
+  /// Calculates the offset for the current point as if it were at the center of a circle, with a given magnitude and angle.
+  func offset(magnitude: Double, angle: Angle) -> CGPoint {
+    let dx = magnitude * cos(angle.radians)
+    let dy = magnitude * sin(angle.radians)
+    return CGPoint(x: x + dx, y: y + dy)
+  }
+  
+  /// Calculates the distance between the current point and the given point.
+  func distance(to point: CGPoint) -> Double {
+    let dx = x - point.x
+    let dy = y - point.y
+    return sqrt(dx * dx + dy * dy)
   }
 }
 
