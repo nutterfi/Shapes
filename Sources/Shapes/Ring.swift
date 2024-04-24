@@ -5,10 +5,10 @@ import SwiftUI
 public struct Ring: Shape {
   /// pass in a style with lineWidth, dash and dash phase elements
   /// the input line width is used to inset properly
-  public var style: StrokeStyle = StrokeStyle()
+  public var style: StrokeStyle
 
   /// The number of pattern repeats around the ring. A nonzero value normalizes the dash patterns to the size of the Ring
-  public var repeatCount: Double = .zero
+  public var repeatCount: Double
   
   /// Constructs a new ring shape
   /// - Parameters:
