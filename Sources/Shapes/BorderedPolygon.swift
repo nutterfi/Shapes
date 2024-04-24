@@ -2,6 +2,7 @@ import SwiftUI
 
 /// An inset polygon shape that supports styling via StrokeStyle.
 /// This shape is an alternative to using `strokeBorder(style:antialiased:)` on `ConvexPolygon`.
+/// FIXME: The combination of an odd repeatCount and odd dash pattern causes unexpected artifacts that can be seen when modifying the dash phase
 public struct BorderedPolygon: Shape {
   public var sides: Int
   /// pass in a style with lineWidth, dash and dash phase elements

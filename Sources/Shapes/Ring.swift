@@ -2,6 +2,7 @@ import SwiftUI
 
 /// An inset circular shape that supports styling via StrokeStyle.
 /// This shape is an alternative to using `strokeBorder(style:antialiased:)` on `Circle`.
+/// FIXME: The combination of an odd repeatCount and odd dash pattern causes unexpected artifacts that can be seen when modifying the dash phase
 public struct Ring: Shape {
   /// pass in a style with lineWidth, dash and dash phase elements
   /// the input line width is used to inset properly
