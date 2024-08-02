@@ -14,12 +14,12 @@ public struct SkewedShape<S: Shape>: Shape {
   public var shape: S
   
   /// Skew factor in both horizontal and vertical directions
-  public var skew: CGVector = .zero
+  public var skew: CGVector
   
   /// The relative position of the skew
-  public var anchor: UnitPoint = .center
+  public var anchor: UnitPoint
   
-  public init(shape: S, skew: CGVector, anchor: UnitPoint) {
+  public init(shape: S, skew: CGVector = .zero, anchor: UnitPoint = .center) {
     self.shape = shape
     self.skew = skew
     self.anchor = anchor
