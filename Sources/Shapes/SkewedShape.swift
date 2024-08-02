@@ -19,6 +19,12 @@ public struct SkewedShape<S: Shape>: Shape {
   /// The relative position of the skew
   public var anchor: UnitPoint = .center
   
+  public init(shape: S, skew: CGVector, anchor: UnitPoint) {
+    self.shape = shape
+    self.skew = skew
+    self.anchor = anchor
+  }
+  
   public func path(in rect: CGRect) -> Path {
     Path { path in
       let anchorOffset = CGSize(
