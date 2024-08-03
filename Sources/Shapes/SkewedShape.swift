@@ -33,9 +33,9 @@ public struct SkewedShape<S: Shape>: Shape {
       )
       
       let skewedPath = shape.path(in: rect)
-        .offsetBy(dx: -anchorOffset.width, dy: -anchorOffset.height)
+        .offsetBy(dx: -anchorOffset.width - rect.minX, dy: -anchorOffset.height - rect.minY)
         .applying(CGAffineTransform(skewX: skew.dx, y: skew.dy))
-        .offsetBy(dx: anchorOffset.width, dy: anchorOffset.height)
+        .offsetBy(dx: anchorOffset.width + rect.minX, dy: anchorOffset.height + rect.minY)
       
       path.addPath(skewedPath)
     }
