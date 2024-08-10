@@ -24,7 +24,7 @@ public struct InsetShape<Content: Shape>: InsettableShape {
   /// the target shape
   public var shape: Content
   
-  /// the inset amount
+  /// the inset amounts
   public var insets: EdgeInsets
     
   /// Create a new inset shape.
@@ -49,12 +49,13 @@ public struct InsetShape<Content: Shape>: InsettableShape {
   }
 }
 
-extension Shape {
+public extension Shape {
   /// Insets this shape by an amount you specify.
   func inset(amount: CGFloat) -> InsetShape<Self> {
     InsetShape(shape: self, inset: amount)
   }
   
+  /// Insets this shape by the amounts you specify.
   func inset(by insets: EdgeInsets) -> InsetShape<Self> {
     InsetShape(shape: self, insets: insets)
   }
