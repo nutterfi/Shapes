@@ -21,8 +21,7 @@ public struct BorderedPolygon: Shape {
   public func path(in rect: CGRect) -> Path {
     Path { path in
       let theStyle = appliedStyle(in: rect)
-      let polygonPath = InsettableWrapperShape(shape: ConvexPolygon(sides: sides))
-        .inset(by: theStyle.lineWidth * 0.5)
+      let polygonPath = InsetShape(shape: ConvexPolygon(sides: sides), inset: theStyle.lineWidth * 0.5)
         .path(in: rect)
         .strokedPath(theStyle)
       path.addPath(polygonPath)
