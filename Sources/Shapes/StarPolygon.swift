@@ -18,7 +18,7 @@ public struct StarPolygon: RegularPolygon {
   public var sides: Int
   
   /// The density of a star polygon. All possible permutations can be generated with density values less than half of the number of points (q < p/2)
-  var density: Int
+  public var density: Int
   
   public init(points: Int, density: Int) {
     self.sides = abs(points)
@@ -50,6 +50,11 @@ public struct StarPolygon: RegularPolygon {
       
       path.closeSubpath()
     }
+  }
+  
+  @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+  public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
+    Circle().sizeThatFits(proposal)
   }
   
 }

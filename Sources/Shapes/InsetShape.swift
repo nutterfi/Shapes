@@ -1,20 +1,5 @@
 import SwiftUI
 
-extension CGRect {
-  
-  /// Adjusts a rectangle by the given edge insets. Valid for LTR layout directions only.
-  /// TODO: Support for RTL
-  public func inset(by insets: EdgeInsets) -> CGRect {
-    let newOrigin = origin.offsetBy(dx: insets.leading, dy: insets.top)
-    let newSize: CGSize = CGSize(
-      width: width - insets.trailing - insets.leading,
-      height: height - insets.bottom - insets.top
-    )
-    
-    return CGRect(origin: newOrigin, size: newSize)
-  }
-}
-
 @available(*, deprecated, renamed: "InsetShape", message: "Renamed InsetShape")
 typealias InsettableWrapperShape = InsetShape
 

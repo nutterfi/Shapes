@@ -47,4 +47,16 @@ public extension CGRect {
     }
     return rects
   }
+  
+  /// Adjusts a rectangle by the given edge insets. Valid for LTR layout directions only.
+  /// TODO: Support for RTL
+  func inset(by insets: EdgeInsets) -> CGRect {
+    let newOrigin = origin.offsetBy(dx: insets.leading, dy: insets.top)
+    let newSize: CGSize = CGSize(
+      width: width - insets.trailing - insets.leading,
+      height: height - insets.bottom - insets.top
+    )
+    
+    return CGRect(origin: newOrigin, size: newSize)
+  }
 }
