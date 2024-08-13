@@ -32,6 +32,11 @@ public struct InsetShape<Content: Shape>: InsettableShape {
   public func path(in rect: CGRect) -> Path {
     return shape.path(in: rect.inset(by: insets))
   }
+  
+  @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+  public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
+    shape.sizeThatFits(proposal)
+  }
 }
 
 public extension Shape {
@@ -45,6 +50,71 @@ public extension Shape {
     InsetShape(shape: self, insets: insets)
   }
 }
+
+#Preview("Inset Test") {
+  struct Demo: View {
+    @State private var inset: CGFloat = .zero
+    
+    let maximum: CGFloat = 320
+    
+    var body: some View {
+      VStack(spacing: 20) {
+        Text(inset.description)
+        Slider(value: $inset, in: -100...maximum, step: 10)
+        
+        let shape = Rectangle()
+        
+        let old = shape
+          .inset(by: inset)
+        
+        old
+          .fill(Color.red.opacity(0.5))
+          .overlay(
+            old
+              .stroke(lineWidth: 3)
+          )
+          .overlay(
+            Text(old.path(in: CGRect.square(maximum))
+              .description)
+              .foregroundStyle(.white)
+          )
+          .background(
+            Check(rows: 4, columns: 4)
+              .background(Color.gray)
+              .opacity(0.5)
+          )
+          .frame(width: maximum, height: maximum)
+          .allowsHitTesting(false)
+        
+        let new = shape
+          .inset(amount: inset)
+        
+        new
+          .fill(Color.green.opacity(0.5))
+          .overlay(
+            new
+              .stroke(lineWidth: 3)
+          )
+          .overlay(
+            Text(
+              new.path(in: CGRect.square(maximum))
+                .description
+            )
+            .foregroundStyle(.white)
+          )
+          .background(Color.gray)
+          .frame(width: maximum, height: maximum)
+          .allowsHitTesting(false)
+          
+      }
+      .padding()
+    }
+    
+  }
+  
+  return Demo()
+}
+
 
 #Preview("Shape Inset Mod") {
   
@@ -64,7 +134,7 @@ public extension Shape {
         Text("TRAILING")
         Slider(value: $insets.trailing, in: 0...100)
         
-        Diamond()
+        Circle()
           .inset(by: insets)
           .border(Color.blue)
           .frame(width: 100, height: 100)

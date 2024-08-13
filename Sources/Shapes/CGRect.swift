@@ -59,4 +59,9 @@ public extension CGRect {
     
     return CGRect(origin: newOrigin, size: newSize)
   }
+  
+  /// Creates a rectangle with square dimensions at the zero origin
+  static func square(_ size: CGFloat) -> CGRect {
+    CGRect(origin: .zero, size: CGSize(width: size, height: size))
+  }
 }
