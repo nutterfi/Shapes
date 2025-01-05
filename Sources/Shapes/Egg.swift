@@ -73,6 +73,12 @@ public struct Egg: NFiShape {
 
     }
   }
+  
+  @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+  public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
+    Circle().sizeThatFits(proposal)
+  }
+  
 }
 
 struct Egg_Previews: PreviewProvider {
@@ -93,7 +99,8 @@ struct Egg_Previews: PreviewProvider {
           .inset(by: 30)
           .frame(width: 128, height: 150)
       }
+      .border(Color.primary)
+      .padding()
       .previewLayout(.sizeThatFits)
-      .border(Color.black)
     }
 }
