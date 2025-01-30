@@ -14,30 +14,17 @@ Shapes requires a minimum of macOS 12, iOS 15, and tvOS 15.
  ###### TODO: Light/dark mode images
 ---
 
-### NFiShape
+### InsetShape
 
-Most of the types that are defined in this project are structs that adhere to SwiftUI's `Shape` protocol. Because `Shape` is already taken, I settled on `NFiShape` as a base protocol that all shapes must conform to.
+Each shape defined in this project adheres to SwiftUI's `Shape` protocol. It is also desirable to provide inset capabilities to these custom shapes, similar to the built-in SwiftUI shapes.
 
-```swift
-public protocol NFiShape: InsettableShape {
-  var inset: CGFloat { get set }
-}
-```
+The `InsetShape` type is introduced as a wrapper type, similar to `RotatedShape`, `OffsetShape`, etc. `InsetShape` conforms to `InsettableShape` and provides a way to inset any given shape.
 
-The definition shows that `NFiShape` conforms to `InsettableShape`, which allows us to use insets on our shapes. ;) 
+Usage: `InsetShape(shape: MyCustomShape(), inset: amount)`
 
-One of the great things about defining `NFiShape` as a protocol is that we can implement a protocol extension that covers our bases as it relates to `InsettableShape`:
+Additionally, a `Shape` extension method has been provided to make this easy to use:
 
-```swift
-public extension NFiShape {
-  func inset(by amount: CGFloat) -> some InsettableShape {
-    var me = self
-    me.inset += amount
-    return me
-  }
-}
-```
-Now any shape that in turn conforms to `NFiShape` will automatically get this behavior for free.
+Usage: `MyShape().inset(amount: amount)` // Returns InsetShape<MyShape>
 
 ### Polygon
 
@@ -45,14 +32,14 @@ A `Polygon` is a closed shape that consists of multiple line segments. It is def
 
 ```swift
 /// A plane figure that is described by a finite number of straight line segments connected to form a closed polygonal chain
-public protocol Polygon: NFiShape {
+public protocol Polygon {
   var sides: Int { get }
   func vertices(in rect: CGRect) -> [CGPoint]
 }
 ```
 Each `Polygon` is defined by the number of sides. In order for the shape to be drawn, the `vertices` of each polygon are also required. These are managed via a `CGPoint` array. The vertices are obtained with a method in order to determine the position given a `CGRect`
 
-Not all shapes in this library will conform to `Polygon` because they may include curved surfaces. However, all shapes should conform to `NFiShape` to take advantage of the insettable feature.
+Not all shapes in this library will conform to `Polygon` because they may include curved surfaces.
 
 #### Polygon Example: SimplePolygon
 

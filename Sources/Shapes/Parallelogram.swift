@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-public struct Parallelogram: Polygon {
-  public var inset: CGFloat = .zero
+public struct Parallelogram: Shape, Polygon {
   
   /// percentage of width where the top left and bottom right vertices are placed. Must be between 0 and 1.0
   public var pct: CGFloat = 0.3
@@ -28,11 +27,21 @@ public struct Parallelogram: Polygon {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-    return Path {path in
-      path.addLines(vertices(in: aRect))
+    Path {path in
+      path.addLines(vertices(in: rect))
       path.closeSubpath()
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
    
 }
@@ -40,7 +49,7 @@ public struct Parallelogram: Polygon {
 struct Parallelogram_Previews: PreviewProvider {
     static var previews: some View {
       Parallelogram(pct: 0.5)
-        .inset(by: 20)
+        .inset(amount: 20)
         .frame(width: 256, height: 128)
         .border(Color.gray)
     }

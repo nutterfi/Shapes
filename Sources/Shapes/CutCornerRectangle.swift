@@ -43,18 +43,16 @@ struct CutCornerDemo: View {
 }
 
 /// 45-degree angle cuts on any or all corners of a rectangle
-public struct CutCornerRectangle: NFiShape {
+public struct CutCornerRectangle: Shape {
   
-  public enum Corner: CaseIterable {
+  public enum Corner: CaseIterable, Sendable {
     case topLeft, topRight, bottomLeft, bottomRight
   }
   
   // each corner may have a separate cut length
   public var corners: [Corner: CGFloat]
   public var ignoreBoundaries: Bool
-  
-  public var inset: CGFloat = .zero
-  
+    
   public init(corners: [Corner: CGFloat], ignoreBoundaries: Bool = false) {
     self.corners = corners
     self.ignoreBoundaries = ignoreBoundaries
@@ -71,33 +69,32 @@ public struct CutCornerRectangle: NFiShape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let insetRect = rect.insetBy(dx: inset, dy: inset)
-    return Path { path in
+    Path { path in
       // p1X is always minX
-      let p1Y: CGFloat = insetRect.minY + (corners[.topLeft] ?? 0)
-      let p2X: CGFloat = insetRect.minX + (corners[.topLeft] ?? 0) // p2Y is minY
+      let p1Y: CGFloat = rect.minY + (corners[.topLeft] ?? 0)
+      let p2X: CGFloat = rect.minX + (corners[.topLeft] ?? 0) // p2Y is minY
       
-      let p1: CGPoint = CGPoint(x: insetRect.minX, y: p1Y)
-      let p2: CGPoint = CGPoint(x: p2X, y: insetRect.minY)
+      let p1: CGPoint = CGPoint(x: rect.minX, y: p1Y)
+      let p2: CGPoint = CGPoint(x: p2X, y: rect.minY)
       
-      let p3X: CGFloat = insetRect.maxX - (corners[.topRight] ?? 0) // p3Y is minY
-      let p4Y: CGFloat = insetRect.minY + (corners[.topRight] ?? 0)
+      let p3X: CGFloat = rect.maxX - (corners[.topRight] ?? 0) // p3Y is minY
+      let p4Y: CGFloat = rect.minY + (corners[.topRight] ?? 0)
       
-      let p3: CGPoint = CGPoint(x: p3X, y: insetRect.minY)
-      let p4: CGPoint = CGPoint(x: insetRect.maxX, y: p4Y)
+      let p3: CGPoint = CGPoint(x: p3X, y: rect.minY)
+      let p4: CGPoint = CGPoint(x: rect.maxX, y: p4Y)
       
-      let p5Y: CGFloat = insetRect.maxY - (corners[.bottomRight] ?? 0) // p5X is maxX
-      let p6X: CGFloat = insetRect.maxX - (corners[.bottomRight] ?? 0)
+      let p5Y: CGFloat = rect.maxY - (corners[.bottomRight] ?? 0) // p5X is maxX
+      let p6X: CGFloat = rect.maxX - (corners[.bottomRight] ?? 0)
       
       
-      let p5: CGPoint = CGPoint(x: insetRect.maxX, y: p5Y)
-      let p6: CGPoint = CGPoint(x: p6X, y: insetRect.maxY)
+      let p5: CGPoint = CGPoint(x: rect.maxX, y: p5Y)
+      let p6: CGPoint = CGPoint(x: p6X, y: rect.maxY)
       
-      let p7X: CGFloat = insetRect.minX + (corners[.bottomLeft] ?? 0) // p3Y is minY
-      let p8Y: CGFloat = insetRect.maxY - (corners[.bottomLeft] ?? 0)
+      let p7X: CGFloat = rect.minX + (corners[.bottomLeft] ?? 0) // p3Y is minY
+      let p8Y: CGFloat = rect.maxY - (corners[.bottomLeft] ?? 0)
       
-      let p7: CGPoint = CGPoint(x: p7X, y: insetRect.maxY)
-      let p8: CGPoint = CGPoint(x: insetRect.minX, y: p8Y)
+      let p7: CGPoint = CGPoint(x: p7X, y: rect.maxY)
+      let p8: CGPoint = CGPoint(x: rect.minX, y: p8Y)
       
       path.move(to: p1)
       path.addLines([p2,p3,p4,p5,p6,p7,p8, p1])
@@ -105,7 +102,16 @@ public struct CutCornerRectangle: NFiShape {
     }
   }
   
-    
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
+  }
 }
 
 struct CutCornerRectangle_Previews: PreviewProvider {

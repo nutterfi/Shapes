@@ -1,22 +1,19 @@
 import SwiftUI
 
-public struct Salinon: NFiShape {
+public struct Salinon: Shape {
   
-  public var inset: CGFloat
   public var innerDiameterRatio: CGFloat
   public var centered: Bool
   
   public init(inset: CGFloat = .zero, innerDiameterRatio: CGFloat = 0.2, centered: Bool = false) {
-    self.inset = inset
     self.innerDiameterRatio = innerDiameterRatio
     self.centered = centered
   }
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let insetRect = rect.insetBy(dx: inset, dy: inset)
-      let dim = min(insetRect.width, insetRect.height)
-      let center = CGPoint(x: insetRect.midX, y: insetRect.midY)
+      let dim = min(rect.width, rect.height)
+      let center = CGPoint(x: rect.midX, y: rect.midY)
       
       // outer semicircle
       path.addArc(center: center, radius: dim * 0.5, startAngle: .radians(.pi), endAngle: .zero, clockwise: false)
@@ -26,7 +23,7 @@ public struct Salinon: NFiShape {
       
       let pointB = path.currentPoint!
       
-      let EBCenter = CGPoint(x: pointB.x - dim * outerDiameterRatio * 0.5, y: insetRect.midY)
+      let EBCenter = CGPoint(x: pointB.x - dim * outerDiameterRatio * 0.5, y: rect.midY)
       
       path.addArc(center: EBCenter, radius: dim * outerDiameterRatio * 0.5, startAngle: .zero, endAngle: .radians(.pi), clockwise: true)
       
@@ -39,7 +36,7 @@ public struct Salinon: NFiShape {
       
       let pointD = path.currentPoint!  // Point 'D'
       
-      let ADCenter = CGPoint(x: pointD.x - dim * outerDiameterRatio * 0.5, y: insetRect.midY)
+      let ADCenter = CGPoint(x: pointD.x - dim * outerDiameterRatio * 0.5, y: rect.midY)
       
       path.addArc(center: ADCenter, radius: dim * outerDiameterRatio * 0.5, startAngle: .zero, endAngle: .radians(.pi), clockwise: true)
       
@@ -50,9 +47,9 @@ public struct Salinon: NFiShape {
         let boundingDim = max(bounding.width, bounding.height)
         
         path = path
-          .offsetBy(dx: insetRect.midX - bounding.midX, dy: insetRect.midY - bounding.midY)
+          .offsetBy(dx: rect.midX - bounding.midX, dy: rect.midY - bounding.midY)
           .scale(dim / boundingDim)
-          .path(in: insetRect)
+          .path(in: rect)
       }
     }
   }
@@ -60,6 +57,17 @@ public struct Salinon: NFiShape {
   @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 
@@ -74,19 +82,19 @@ struct SalinonDemo: View {
       Toggle("Centered", isOn: $centered)
       Spacer()
       Salinon(innerDiameterRatio: ratio, centered: centered)
-        .inset(by: inset * 128)
+        .inset(amount: inset * 128)
         .stroke(Color.red)
         .frame(width: 256, height: 128)
         .border(Color.purple)
       
       Salinon(innerDiameterRatio: ratio, centered: centered)
-        .inset(by: inset * 256)
+        .inset(amount: inset * 256)
         .stroke(Color.red)
         .frame(width: 256, height: 256)
         .border(Color.purple)
       
       Salinon(innerDiameterRatio: ratio, centered: centered)
-        .inset(by: inset * 128)
+        .inset(amount: inset * 128)
         .stroke(Color.red)
         .frame(width: 128, height: 256)
         .border(Color.purple)

@@ -11,9 +11,7 @@ import SwiftUI
 /// TODO:
 ///  Compute whether it can close
 ///  Compute how many reps required to close
-public struct Spirolateral: NFiShape {
-  public var inset: CGFloat = .zero
-  
+public struct Spirolateral: Shape {
   /// if a single value in the array, the shape will sequentially increase turns. If multiple values are in the array, the shape will use turn values in the order they are received, where negative values indicate reversals
   public var turns: [Int] = [10]
   /// turning angle in degrees
@@ -32,9 +30,8 @@ public struct Spirolateral: NFiShape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let insetRect = rect.insetBy(dx: inset, dy: inset)
-      let dim = min(insetRect.width, insetRect.height)
-      var point = CGPoint(x: insetRect.midX, y: insetRect.midY)
+      let dim = min(rect.width, rect.height)
+      var point = CGPoint(x: rect.midX, y: rect.midY)
       path.move(to: point)
       
       var angle: CGFloat = 0
@@ -66,10 +63,21 @@ public struct Spirolateral: NFiShape {
       let boundingDim = max(bounding.width, bounding.height)
       
       path = path
-        .offsetBy(dx: insetRect.midX - bounding.midX, dy: insetRect.midY - bounding.midY)
+        .offsetBy(dx: rect.midX - bounding.midX, dy: rect.midY - bounding.midY)
         .scale(dim / boundingDim)
-        .path(in: insetRect)
+        .path(in: rect)
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 
@@ -91,7 +99,7 @@ struct Spirolateral_Previews: PreviewProvider {
       Spirolateral()
         .fill(Color.red)
       Spirolateral()
-        .inset(by: 50)
+        .inset(amount: 50)
         .stroke(lineWidth: 5)
         .border(Color.purple)
     }

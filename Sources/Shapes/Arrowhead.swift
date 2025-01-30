@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// An arrowhead shape with adjustable tip positions. Also known as a "dart".
-public struct Arrowhead: NFiShape {
+public struct Arrowhead: Shape {
   
   /// The normalized tip position.
   public var tipPoint: CGPoint
@@ -14,9 +14,6 @@ public struct Arrowhead: NFiShape {
   
   /// Affects the curvature of the line on the left side
   public var controlPointLeft: CGPoint
-  
-  /// The inset value of the arrowhead
-  public var inset: CGFloat = .zero
   
   /// Creates a new arrowhead shape.
   public init(
@@ -32,39 +29,52 @@ public struct Arrowhead: NFiShape {
   }
 
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-
-    return Path { path in
-      path.move(to: CGPoint(x: aRect.minX + tipPoint.x * aRect.width, y: aRect.minY + tipPoint.y * aRect.height))
+    Path { path in
+      path.move(to: CGPoint(x: rect.minX + tipPoint.x * rect.width, y: rect.minY + tipPoint.y * rect.height))
       
-      path.addQuadCurve(to: CGPoint(x: aRect.maxX, y: aRect.maxY),
-                        control: CGPoint(x: aRect.minX + controlPointRight.x * aRect.width, y: aRect.minY + controlPointRight.y * aRect.height))
+      path.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.maxY),
+                        control: CGPoint(x: rect.minX + controlPointRight.x * rect.width, y: rect.minY + controlPointRight.y * rect.height))
       
-      path.addQuadCurve(to: CGPoint(x: aRect.minX + midPoint.x * aRect.width, y: aRect.minY + midPoint.y * aRect.height),
-                        control: CGPoint(x: aRect.maxX, y: aRect.maxY))
+      path.addQuadCurve(to: CGPoint(x: rect.minX + midPoint.x * rect.width, y: rect.minY + midPoint.y * rect.height),
+                        control: CGPoint(x: rect.maxX, y: rect.maxY))
       
-      path.addQuadCurve(to: CGPoint(x: aRect.minX, y: aRect.maxY),
-                        control: CGPoint(x: aRect.minX, y: aRect.maxY))
+      path.addQuadCurve(to: CGPoint(x: rect.minX, y: rect.maxY),
+                        control: CGPoint(x: rect.minX, y: rect.maxY))
       
-      path.addQuadCurve(to: CGPoint(x: aRect.minX + tipPoint.x * aRect.width, y: aRect.minY + tipPoint.y * aRect.height),
-                        control: CGPoint(x: aRect.minX + controlPointLeft.x * aRect.width, y: aRect.minY + controlPointLeft.y * aRect.height))
+      path.addQuadCurve(to: CGPoint(x: rect.minX + tipPoint.x * rect.width, y: rect.minY + tipPoint.y * rect.height),
+                        control: CGPoint(x: rect.minX + controlPointLeft.x * rect.width, y: rect.minY + controlPointLeft.y * rect.height))
       path.closeSubpath()
     }
   }
+  
+  // MARK: - Deprecations
+  
+  /// The inset value of the arrowhead
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
+  }
 }
 
-struct Arrow_Previews: PreviewProvider {
-    static var previews: some View {
-      ZStack {
-        Arrowhead(tipPoint: CGPoint(x: 0.5, y: 0),
-              midPoint: CGPoint(x: 0.5, y: 0.75))
-            .fill(Color.orange)
-        
-        Arrowhead(tipPoint: CGPoint(x: 0.5, y: 0),
-              midPoint: CGPoint(x: 0.5, y: 0.75))
-          .inset(by: 32)
-      }
-      .border(Color.purple)
-      .frame(width: 256, height: 256)
+#Preview("Arrowhead") {
+  VStack {
+    
+    let shape = Arrowhead(
+      tipPoint: CGPoint(x: 0.5, y: 0),
+      midPoint: CGPoint(x: 0.5, y: 0.75)
+    )
+    
+    shape
+    .stroke(Color.orange)
+    .overlay {
+      shape
+      .inset(amount: 32)
     }
+    
+  }
+  .border(Color.purple)
+  .frame(width: 256, height: 256)
 }

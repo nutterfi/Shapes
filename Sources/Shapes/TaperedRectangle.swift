@@ -6,8 +6,7 @@
 
 import SwiftUI
 
-public struct TaperedRectangle: Polygon {
-  public var inset: CGFloat = .zero
+public struct TaperedRectangle: Shape, Polygon {
   public var sides: Int = 6
   public var taper: CGFloat = 0
   
@@ -30,11 +29,21 @@ public struct TaperedRectangle: Polygon {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-    return Path { path in
-      path.addLines(vertices(in: aRect))
+    Path { path in
+      path.addLines(vertices(in: rect))
       path.closeSubpath()
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 
@@ -49,7 +58,7 @@ struct TaperedRect_Previews: PreviewProvider {
         .foregroundColor(.green)
         
         TaperedRectangle(taper: 20)
-          .inset(by: 20)
+          .inset(amount: 20)
           .frame(width: 200, height: 50)
         .foregroundColor(.red)
       }

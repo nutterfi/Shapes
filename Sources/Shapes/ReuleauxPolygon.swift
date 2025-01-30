@@ -17,10 +17,8 @@ public struct Reuleaux {
 /**
  A curve of constant width made up of circular arcs of constant radius. This implementation assumes odd-number sided regular polygons
  */
-public struct ReuleauxPolygon: Polygon {
-  
-  public var inset: CGFloat = 0
-  
+public struct ReuleauxPolygon: Shape, Polygon {
+    
   /// Should be odd. Undefined shape for even-sided cases
   public var sides: Int
   
@@ -33,9 +31,8 @@ public struct ReuleauxPolygon: Polygon {
   }
 
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-    return Path { path in
-      let points = vertices(in: aRect)
+    Path { path in
+      let points = vertices(in: rect)
             
       // length from furthest points
       let dx = abs(points[(sides-1)/2].x - points[0].x)
@@ -65,6 +62,17 @@ public struct ReuleauxPolygon: Polygon {
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
   }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
+  }
 }
 
 struct ReuleauxPolygon_Previews: PreviewProvider {
@@ -72,7 +80,7 @@ struct ReuleauxPolygon_Previews: PreviewProvider {
       ZStack {
         Reuleaux.triangle
           .stroke()
-        Reuleaux.triangle.inset(by: 10)
+        Reuleaux.triangle.inset(amount: 10)
           .stroke()
         
         let vertices = Reuleaux.triangle.vertices(in: CGRect(x: 0, y: 0, width: 256, height: 256))

@@ -1,10 +1,7 @@
 import SwiftUI
 
 /// A bullet shape that faces to the right
-public struct Bullet: Polygon {
-  
-  /// The inset amount applied to the bullet
-  public var inset: CGFloat = .zero
+public struct Bullet: Shape {
   
   /// Controls the sharpness of the bullet.
   public var taper: CGFloat = .zero
@@ -34,9 +31,20 @@ public struct Bullet: Polygon {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      path.addLines(vertices(in: rect.insetBy(dx: inset, dy: inset)))
+      path.addLines(vertices(in: rect))
       path.closeSubpath()
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount applied to the bullet
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 
@@ -47,7 +55,7 @@ struct Bullet_Previews: PreviewProvider {
           .fill(Color.blue)
         
         Bullet(taper: 80)
-          .inset(by: 10)
+          .inset(amount: 10)
           .fill(Color.red)
       }
       .frame(width: 80, height: 40)

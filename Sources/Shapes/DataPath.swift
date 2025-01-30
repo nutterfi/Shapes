@@ -8,8 +8,7 @@
 import SwiftUI
 
 /// draws a scaled path of the data
-public struct DataPath: NFiShape {
-  public var inset: CGFloat = .zero
+public struct DataPath: Shape {
   public var data: [CGFloat]
   
   public init(data: [CGFloat]) {
@@ -18,18 +17,17 @@ public struct DataPath: NFiShape {
 
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let insetRect = rect.insetBy(dx: inset, dy: inset)
       let largest = data.max()!
       let smallest = data.min()!
       let factor = max(abs(smallest), largest)
 
       let scaledData = data.map { $0 / factor }
       
-      let dx: CGFloat = insetRect.width / CGFloat(scaledData.count)
+      let dx: CGFloat = rect.width / CGFloat(scaledData.count)
       
       for (index, point) in scaledData.enumerated() {
-        let x = insetRect.minX + dx * CGFloat(index)
-        let y = insetRect.midY + 0.5 * (insetRect.minY - point * insetRect.height)
+        let x = rect.minX + dx * CGFloat(index)
+        let y = rect.midY + 0.5 * (rect.minY - point * rect.height)
         
         if index == 0 {
           path.move(to: CGPoint(x: x, y: y))
@@ -38,6 +36,17 @@ public struct DataPath: NFiShape {
         path.addLine(to: CGPoint(x: x, y: y))
       }
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the polygon
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
  
 }

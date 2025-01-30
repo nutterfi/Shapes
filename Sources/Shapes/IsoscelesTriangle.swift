@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-public struct IsoscelesTriangle: Polygon {
+public struct IsoscelesTriangle: Shape, Polygon {
   public var sides: Int = 3
-  public var inset: CGFloat = .zero
   
   public init() {}
   
@@ -22,11 +21,21 @@ public struct IsoscelesTriangle: Polygon {
   }
 
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-    return Path { path in
-      path.addLines(vertices(in: aRect))
+    Path { path in
+      path.addLines(vertices(in: rect))
       path.closeSubpath()
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 

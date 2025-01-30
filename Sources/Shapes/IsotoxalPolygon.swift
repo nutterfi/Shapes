@@ -3,15 +3,12 @@ import SwiftUI
 /// An even-sided equilateral polygon. An isotoxal polygon has symmetry on its edges.
 ///
 /// In this implementation, the polygon is constructed with an array of points which are positioned relative to a circle that fits the bounds of the shape. The `innerRadius` is used to compute the position of the even-indexed points. Values less than one position those points toward the shape's center.
-public struct IsotoxalPolygon: Polygon {
+public struct IsotoxalPolygon: Shape, Polygon {
   /// Number of sides. All isotoxal polygons must have even number of sides
   public var sides: Int
   
   /// The relative radius of the even-indexed points. Valid for values between 0 and 1.
   public var innerRadius: CGFloat
-  
-  /// The inset value of the polygon
-  public var inset: CGFloat = .zero
   
   /// Constructs a new polygon
   /// - Parameters:
@@ -35,7 +32,7 @@ public struct IsotoxalPolygon: Polygon {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      path.addLines(vertices(in: rect.insetBy(dx: inset, dy: inset)))
+      path.addLines(vertices(in: rect))
       path.closeSubpath()
     }
   }
@@ -43,6 +40,17 @@ public struct IsotoxalPolygon: Polygon {
   @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
   
 }

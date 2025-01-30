@@ -7,10 +7,8 @@
 import SwiftUI
 
 // FIXME: This is more like a pseudo-crescent shape. Maybe even a boomerang? I'd like to add the ability to modify the curves
-public struct Crescent: NFiShape {
-  /// The inset of the shape.
-  public var inset: CGFloat = .zero
-  
+public struct Crescent: Shape {
+
   /// The offset of the circle that creates the crescent effect
   public var offset: UnitPoint
   
@@ -25,13 +23,23 @@ public struct Crescent: NFiShape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-    return Path { path in
-      path.move(to: CGPoint(x: aRect.minX, y: aRect.minY))
-      path.addQuadCurve(to: CGPoint(x: aRect.minX, y: aRect.maxY), control: CGPoint(x: aRect.midX, y: aRect.midY))
-      path.addQuadCurve(to: CGPoint(x: aRect.minX, y: aRect.minY), control: CGPoint(x: aRect.maxX, y: aRect.midY))
+    Path { path in
+      path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+      path.addQuadCurve(to: CGPoint(x: rect.minX, y: rect.maxY), control: CGPoint(x: rect.midX, y: rect.midY))
+      path.addQuadCurve(to: CGPoint(x: rect.minX, y: rect.minY), control: CGPoint(x: rect.maxX, y: rect.midY))
       path.closeSubpath()
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the polygon
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
   
 }
@@ -40,7 +48,7 @@ struct CrescentView_Previews: PreviewProvider {
     static var previews: some View {
       ZStack {
         Crescent().fill(Color.purple)
-        Crescent().inset(by: 32)
+        Crescent().inset(amount: 32)
       }
       .frame(width: 256, height: 256)
       .border(Color.black)

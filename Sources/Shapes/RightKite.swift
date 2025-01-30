@@ -1,8 +1,7 @@
 import SwiftUI
 
 /// A kite where points are placed along a circle
-public struct RightKite: Polygon {
-  public var inset: CGFloat = .zero
+public struct RightKite: Shape, Polygon {
   
   public var sides: Int = 4
   
@@ -30,9 +29,8 @@ public struct RightKite: Polygon {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let insetRect = rect.insetBy(dx: inset, dy: inset)
-    return Path { path in
-      path.addLines(vertices(in: insetRect))
+    Path { path in
+      path.addLines(vertices(in: rect))
       path.closeSubpath()
     }
   }
@@ -40,6 +38,17 @@ public struct RightKite: Polygon {
   @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
   
 }

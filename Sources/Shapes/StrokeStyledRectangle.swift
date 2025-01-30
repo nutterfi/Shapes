@@ -7,10 +7,7 @@
 import SwiftUI
 
 /// A rectangle drawn with a stroke border, and a stroke style of equally distributed dashes.
-public struct StrokeStyledRectangle: NFiShape {
-  
-  public var inset: CGFloat = .zero
-  
+public struct StrokeStyledRectangle: Shape {
   // number of equal length dashes along the perimeter
   public var dashes: Int
   
@@ -56,14 +53,12 @@ public struct StrokeStyledRectangle: NFiShape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    Path { path in
-      let insetRect = rect.insetBy(dx: inset, dy: inset)
-      
+    Path { path in      
       let normalLineWidthRatio = lineWidthRatio.clamped(to: 0...CGFloat(0.5))
       
-      let dim = min(insetRect.width, insetRect.height)
+      let dim = min(rect.width, rect.height)
       
-      let perimeter = 2 * (insetRect.width + insetRect.height) * (1 - normalLineWidthRatio)
+      let perimeter = 2 * (rect.width + rect.height) * (1 - normalLineWidthRatio)
       
       let strokeRatio: CGFloat =
       dashes > 0 ? perimeter / CGFloat(dashes) : 0
@@ -90,9 +85,20 @@ public struct StrokeStyledRectangle: NFiShape {
       path = Rectangle()
         .inset(by: lineWidth * 0.5)
         .trim(from: trim.0, to: trim.1)
-        .path(in: insetRect)
+        .path(in: rect)
         .strokedPath(style)
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 

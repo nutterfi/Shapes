@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-public struct Lens: NFiShape {
-  public var inset: CGFloat = .zero
+public struct Lens: Shape {
   public var curveFactor: CGFloat  // clamped between [0, 1]
   
   public init(_ curveFactor: CGFloat = 0.5) {
@@ -17,39 +16,48 @@ public struct Lens: NFiShape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let insetRect = rect.insetBy(dx: inset, dy: inset)
-      
       path.move(
         to: CGPoint(
-          x: insetRect.midX,
-          y: insetRect.minY
+          x: rect.midX,
+          y: rect.minY
         )
       )
       
       path.addQuadCurve(
         to: CGPoint(
-          x: insetRect.midX,
-          y: insetRect.maxY
+          x: rect.midX,
+          y: rect.maxY
         ),
         control: CGPoint(
-          x: insetRect.maxX + insetRect.width * 0.5 - curveFactor * insetRect.width,
-          y: insetRect.midY
+          x: rect.maxX + rect.width * 0.5 - curveFactor * rect.width,
+          y: rect.midY
         )
       )
       
       path.addQuadCurve(
         to: CGPoint(
-          x: insetRect.midX,
-          y: insetRect.minY
+          x: rect.midX,
+          y: rect.minY
         ),
         control: CGPoint(
-          x: insetRect.minX - insetRect.width * 0.5 + curveFactor * insetRect.width,
-          y: insetRect.midY
+          x: rect.minX - rect.width * 0.5 + curveFactor * rect.width,
+          y: rect.midY
         )
       )
       
       path.closeSubpath()
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
     
 }

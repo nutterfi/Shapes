@@ -1,10 +1,7 @@
 import SwiftUI
 
 /// A triquetra shape.
-public struct Triquetra: NFiShape {
-  /// The inset of the shape.
-  public var inset: CGFloat = .zero
-  
+public struct Triquetra: Shape {
   /// Whether to center the Triquetra in the frame.
   /// The points on the triquetra will follow a circle inscribed in the path if not centered
   public var centered = false
@@ -18,16 +15,14 @@ public struct Triquetra: NFiShape {
   ///   - centered: Whether to center the Triquetra in the frame.
   public init(strokeStyle: StrokeStyle = StrokeStyle(), centered: Bool = false) {
     self.strokeStyle = strokeStyle
-    inset = .zero
     self.centered = centered
   }
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let insetRect = rect.insetBy(dx: inset, dy: inset)
-      let vertices = ConvexPolygon(sides: 3).vertices(in: insetRect)
+      let vertices = ConvexPolygon(sides: 3).vertices(in: rect)
       
-      let dim = min(insetRect.width, insetRect.height)
+      let dim = min(rect.width, rect.height)
       
       let x = (vertices[1].x - vertices[0].x)
       let y = (vertices[1].y - vertices[0].y)
@@ -50,9 +45,9 @@ public struct Triquetra: NFiShape {
         let boundingDim = max(bounding.width, bounding.height)
         
         path = path
-          .offsetBy(dx: insetRect.midX - bounding.midX, dy: insetRect.midY - bounding.midY)
+          .offsetBy(dx: rect.midX - bounding.midX, dy: rect.midY - bounding.midY)
           .scale(dim / boundingDim)
-          .path(in: insetRect)
+          .path(in: rect)
       }
       
       path = path.strokedPath(strokeStyle)
@@ -63,6 +58,17 @@ public struct Triquetra: NFiShape {
   @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
   
 }
@@ -76,7 +82,7 @@ struct Triquetra_Previews: PreviewProvider {
         VStack {
           Text("Not Centered")
           Triquetra(strokeStyle: style)
-            .inset(by: lineWidth / 2)
+            .inset(amount: lineWidth / 2)
             .background {
               Circle()
                 .stroke(Color.blue.opacity(0.4))
@@ -87,7 +93,7 @@ struct Triquetra_Previews: PreviewProvider {
         VStack {
           Text("Centered")
           Triquetra(strokeStyle: style, centered: true)
-            .inset(by: lineWidth / 2)
+            .inset(amount: lineWidth / 2)
             .background {
               Circle()
                 .stroke(Color.blue.opacity(0.4))

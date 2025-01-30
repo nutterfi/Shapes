@@ -12,9 +12,8 @@ import SwiftUI
   Use the stroke() modifier to see the invidual lines
   Ref: https://mathworld.wolfram.com/StarPolygon.html
  */
-public struct StarPolygon: RegularPolygon {
+public struct StarPolygon: Shape, RegularPolygon {
   
-  public var inset: CGFloat = 0
   public var sides: Int
   
   /// The density of a star polygon. All possible permutations can be generated with density values less than half of the number of points (q < p/2)
@@ -27,7 +26,7 @@ public struct StarPolygon: RegularPolygon {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let vertices = vertices(in: rect.insetBy(dx: inset, dy: inset))
+      let vertices = vertices(in: rect)
       path.move(to: vertices.first!)
       
       var usedIndexes = Set<Int>()
@@ -57,6 +56,17 @@ public struct StarPolygon: RegularPolygon {
     Circle().sizeThatFits(proposal)
   }
   
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
+  }
+  
 }
 
 extension StarPolygon: Animatable {
@@ -77,7 +87,7 @@ public struct StarPolygon_Previews: PreviewProvider {
       StarPolygon(points: 5, density: 2)
         
       StarPolygon(points: 5, density: 2)
-        .inset(by: 50)
+        .inset(amount: 50)
         .stroke(Color.green)
         
     }

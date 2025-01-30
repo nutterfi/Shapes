@@ -7,7 +7,7 @@
 import SwiftUI
 
 /// A plane figure that is described by a finite number of straight line segments connected to form a closed polygonal chain
-public protocol Polygon: NFiShape {
+public protocol Polygon {
   var sides: Int { get }
   func vertices(in rect: CGRect) -> [CGPoint]
 }

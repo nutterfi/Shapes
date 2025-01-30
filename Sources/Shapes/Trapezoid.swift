@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-public struct Trapezoid: Polygon {
-  public var inset: CGFloat = .zero
+public struct Trapezoid: Shape, Polygon {
   
   /// percentage of width where the top left vertex is placed. Must be between 0 and 1.0
   public var pct1: CGFloat = 0.25
@@ -33,11 +32,21 @@ public struct Trapezoid: Polygon {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-    return Path {path in
-      path.addLines(vertices(in: aRect))
+    Path {path in
+      path.addLines(vertices(in: rect))
       path.closeSubpath()
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
    
 }
@@ -50,7 +59,7 @@ struct Trapezoid_Previews: PreviewProvider {
           .border(Color.gray)
 
         Trapezoid()
-          .inset(by: 20)
+          .inset(amount: 20)
           .frame(width: 256, height: 128)
         .border(Color.gray)
       }

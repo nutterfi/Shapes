@@ -1,9 +1,7 @@
 import SwiftUI
 
-public struct Teardrop: NFiShape {
-  
-  public var inset: CGFloat = .zero
-    
+public struct Teardrop: Shape {
+
   /// clamped values between 0...1 Default is CGPoint(1,0.5)
   public var variation: CGPoint
   
@@ -14,18 +12,17 @@ public struct Teardrop: NFiShape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let insetRect = rect.insetBy(dx: inset, dy: inset)
-    let dim = min(insetRect.width, insetRect.height)
-    let origin = CGPoint(x: insetRect.midX, y: insetRect.minY)
+    let dim = min(rect.width, rect.height)
+    let origin = CGPoint(x: rect.midX, y: rect.minY)
     
     let controlPoint1 = CGPoint(
-      x: insetRect.midX + dim * 0.5 * variation.x,
-      y: insetRect.minY + insetRect.height * 0.5 * variation.y
+      x: rect.midX + dim * 0.5 * variation.x,
+      y: rect.minY + rect.height * 0.5 * variation.y
     )
     
     let controlPoint2 = CGPoint(
-      x: insetRect.midX - dim * 0.5 * variation.x,
-      y: insetRect.minY + insetRect.height * 0.5 * variation.y
+      x: rect.midX - dim * 0.5 * variation.x,
+      y: rect.minY + rect.height * 0.5 * variation.y
     )
     
     return Path { path in
@@ -33,14 +30,14 @@ public struct Teardrop: NFiShape {
       
       path.addQuadCurve(
         to: CGPoint(
-          x: insetRect.midX + dim * 0.5,
-          y: insetRect.maxY - dim * 0.5
+          x: rect.midX + dim * 0.5,
+          y: rect.maxY - dim * 0.5
         ),
         control: controlPoint1
       )
       
       path.addArc(
-        center: .init(x: insetRect.midX, y: insetRect.maxY - dim * 0.5),
+        center: .init(x: rect.midX, y: rect.maxY - dim * 0.5),
         radius: dim * 0.5,
         startAngle: .zero,
         endAngle: Angle(radians: .pi),
@@ -55,6 +52,16 @@ public struct Teardrop: NFiShape {
     }
   }
   
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
+  }
 }
 
 struct TeardropDemo: View {
@@ -68,6 +75,7 @@ struct TeardropDemo: View {
       Spacer()
       ZStack {
         Teardrop(CGPoint(x: CGFloat(xValue), y: CGFloat(yValue)))
+          .inset(amount: 0)
           .strokeBorder(Color.red,
                         style: StrokeStyle(
                           lineWidth: 2,
@@ -78,7 +86,7 @@ struct TeardropDemo: View {
           .frame(width: 150, height: 300)
           .border(Color.purple)
         Teardrop(CGPoint(x: CGFloat(xValue), y: CGFloat(yValue)))
-          .inset(by: 80)
+          .inset(amount: 80)
           .strokeBorder(Color.red,
                         style: StrokeStyle(
                           lineWidth: 2,

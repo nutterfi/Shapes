@@ -16,10 +16,9 @@ import SwiftUI
  3: RRL + R + [RLL]
  4: RRLRRLL + R + [RRLLRLL]
  */
-public struct DragonCurve: NFiShape {
+public struct DragonCurve: Shape {
   public var steps: Int = 4
   public var angleDegrees: Int = 90
-  public var inset: CGFloat = .zero
   
   public init(steps: Int = 4, angleDegrees: Int = 60) {
     self.steps = steps
@@ -27,8 +26,7 @@ public struct DragonCurve: NFiShape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let insetRect = rect.insetBy(dx: inset, dy: inset)
-    let dim = min(insetRect.width, insetRect.height)
+    let dim = min(rect.width, rect.height)
     
     return Path { path in
       var elements = ""
@@ -36,7 +34,7 @@ public struct DragonCurve: NFiShape {
       // 'R' == 0
       // 'L' == 1
       // for each step
-      path.move(to: CGPoint(x: insetRect.midX, y: insetRect.midY))
+      path.move(to: CGPoint(x: rect.midX, y: rect.midY))
       for _ in 0..<steps {
         let reversed = String(elements.reversed())
         let swapped = reversed.map { element in
@@ -61,10 +59,21 @@ public struct DragonCurve: NFiShape {
       let boundingDim = max(bounding.width, bounding.height)
       
       path = path
-        .offsetBy(dx: insetRect.midX - bounding.midX, dy: insetRect.midY - bounding.midY)
+        .offsetBy(dx: rect.midX - bounding.midX, dy: rect.midY - bounding.midY)
         .scale(dim / boundingDim)
-        .path(in: insetRect)
+        .path(in: rect)
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
     
 }

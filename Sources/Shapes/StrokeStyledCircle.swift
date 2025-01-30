@@ -1,10 +1,7 @@
 import SwiftUI
 
 /// A circle drawn with a stroke border, and a stroke style of equally distributed dashes.
-public struct StrokeStyledCircle: NFiShape {
-  
-  /// the amount of inset to apply to the shape
-  public var inset: CGFloat = .zero
+public struct StrokeStyledCircle: Shape {
   
   /// the number of dashes used to stroke the circle path
   public var numberOfSegments: Int
@@ -79,9 +76,7 @@ public struct StrokeStyledCircle: NFiShape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let insetRect = rect.insetBy(dx: inset, dy: inset)
-      
-      let dim = min(insetRect.width, insetRect.height)
+      let dim = min(rect.width, rect.height)
       
       // Circumference of the circle split into the number of dashes gives the length of a single dash (or segment)
       let dashLength: CGFloat = .pi * dim / CGFloat(numberOfSegments)
@@ -127,9 +122,20 @@ public struct StrokeStyledCircle: NFiShape {
       path = Circle()
         .inset(by: strokeWidth * 0.5)
         .trim(from: trim.0, to: trim.1)
-        .path(in: insetRect)
+        .path(in: rect)
         .strokedPath(style)
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 

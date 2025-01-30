@@ -6,13 +6,13 @@ import SwiftUI
 public struct Hatching: Shape {
   
   /// Type of curve to use when drawing Contour Hatching
-  public enum Contour: Equatable {
+  public enum Contour: Equatable, Sendable {
     case quadCurve(CGPoint)
     case curve(CGPoint, CGPoint)
   }
   
   /// The available hatching patterns
-  public enum Pattern: Hashable {
+  public enum Pattern: Hashable, Sendable {
     case linear
     case cross
     case contour(Contour)

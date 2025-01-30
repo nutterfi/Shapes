@@ -6,9 +6,7 @@
 
 import SwiftUI
 
-public struct Kite: Polygon {
-  public var inset: CGFloat = .zero
-  
+public struct Kite: Shape, Polygon {
   public var sides: Int = 4
   
   public var pointRatio: CGFloat = 0.5
@@ -27,11 +25,21 @@ public struct Kite: Polygon {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-    return Path { path in
-      path.addLines(vertices(in: aRect))
+    Path { path in
+      path.addLines(vertices(in: rect))
       path.closeSubpath()
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 
@@ -53,7 +61,7 @@ struct Kite_Previews: PreviewProvider {
         ZStack {
           ForEach(0...100, id: \.self) { index in
             Kite(pointRatio: 0.5)
-            .inset(by: CGFloat(index) / 100 * dim)
+            .inset(amount: CGFloat(index) / 100 * dim)
             .stroke()
             .border(Color.black)
           }

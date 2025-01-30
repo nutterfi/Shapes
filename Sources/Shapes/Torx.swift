@@ -1,10 +1,7 @@
 import SwiftUI
 
 /// Draws a "Torx" shape, which can be described as the appearance of one of those screws that Apple uses to prevent you from repairing your own device.
-public struct Torx: NFiShape {
-  /// The inset amount, in points
-  public var inset: CGFloat = .zero
-  
+public struct Torx: Shape {
   /// The number of sides of the torx shape.
   public var sides: Int
   
@@ -22,15 +19,14 @@ public struct Torx: NFiShape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let insetRect = rect.insetBy(dx: inset, dy: inset)
-    return Path { path in
-      let dim = min(insetRect.height, insetRect.width)
+    Path { path in
+      let dim = min(rect.height, rect.width)
       let polygon = ConvexPolygon(sides: sides)
-      let vertices = polygon.vertices(in: insetRect)
+      let vertices = polygon.vertices(in: rect)
       let ratio = controlPointInset > 0.5 ? 1 - controlPointInset : controlPointInset
       let controlPoints = polygon
         .vertices(
-          in: insetRect
+          in: rect
             .insetBy(
               dx: dim * ratio,
               dy: dim * ratio
@@ -55,6 +51,17 @@ public struct Torx: NFiShape {
   @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 

@@ -1,11 +1,7 @@
 import SwiftUI
 
 /// A polygon drawn with a stroke border, and a stroke style of equally distributed dashes.
-public struct StrokeStyledPolygon: NFiShape {
-  
-  /// the amount of inset to apply to the shape
-  public var inset: CGFloat = .zero
-  
+public struct StrokeStyledPolygon: Shape {
   /// the number of polygon sides. Defaults to 3
   public var sides: Int
   
@@ -85,9 +81,7 @@ public struct StrokeStyledPolygon: NFiShape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let insetRect = rect.insetBy(dx: inset, dy: inset)
-      
-      let dim = min(insetRect.width, insetRect.height)
+      let dim = min(rect.width, rect.height)
       
       let strokeWidth: CGFloat
       let strokeRatio: CGFloat
@@ -137,11 +131,22 @@ public struct StrokeStyledPolygon: NFiShape {
       )
       
       path = StarPolygon(points: sides, density: density)
-        .inset(by: strokeWidth * 0.5)
+        .inset(amount: strokeWidth * 0.5)
         .trim(from: trim.0, to: trim.1)
-        .path(in: insetRect)
+        .path(in: rect)
         .strokedPath(style)
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 

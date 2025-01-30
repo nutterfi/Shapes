@@ -1,12 +1,9 @@
 import SwiftUI
 
 /// A convex regular polygon
-public struct ConvexPolygon: RegularPolygon {
+public struct ConvexPolygon: Shape, RegularPolygon {
   /// The number of polygon sides
   public var sides: Int
-  
-  /// The inset amount of the polygon
-  public var inset: CGFloat = .zero
   
   /// Creates a new convex polygon
   public init(sides: Int) {
@@ -15,7 +12,7 @@ public struct ConvexPolygon: RegularPolygon {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      path.addLines(vertices(in: rect.insetBy(dx: inset, dy: inset)))
+      path.addLines(vertices(in: rect))
       path.closeSubpath()
     }
   }
@@ -23,6 +20,17 @@ public struct ConvexPolygon: RegularPolygon {
   @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the polygon
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 
@@ -46,7 +54,7 @@ struct ConvexPolygon_Previews: PreviewProvider {
           .strokeBorder(Color.red, lineWidth: 10)
         
         ConvexPolygon(sides: 7)
-          .inset(by: inset)
+          .inset(amount: inset)
           .strokeBorder(Color.green.opacity(0.8), lineWidth: 10)
         .border(Color.red)
         

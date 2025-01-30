@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// A heart shape.
-public struct Heart: NFiShape {
+public struct Heart: Shape {
   
   /// the top center of the heart
   private let origin = UnitPoint(x: 0.5, y: 0.2)
@@ -20,20 +20,27 @@ public struct Heart: NFiShape {
   
   /// The second control point that draws the right side curve
   private let controlRight2 = UnitPoint(x: 1.4, y: 0.45)
-  
-  /// The inset of the shape
-  public var inset: CGFloat = .zero
 
   public init() {}
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let insetRect = rect.insetBy(dx: inset, dy: inset)
-      path.move(to: insetRect.projectedPoint(origin))
-      path.addCurve(to: insetRect.projectedPoint(bottom), control1: insetRect.projectedPoint(controlLeft1), control2: insetRect.projectedPoint(controlLeft2))
-      path.addCurve(to: insetRect.projectedPoint(origin), control1: insetRect.projectedPoint(controlRight2), control2: insetRect.projectedPoint(controlRight1))
+      path.move(to: rect.projectedPoint(origin))
+      path.addCurve(to: rect.projectedPoint(bottom), control1: rect.projectedPoint(controlLeft1), control2: rect.projectedPoint(controlLeft2))
+      path.addCurve(to: rect.projectedPoint(origin), control1: rect.projectedPoint(controlRight2), control2: rect.projectedPoint(controlRight1))
       path.closeSubpath()
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
     
 }

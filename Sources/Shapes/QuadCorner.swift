@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-public struct QuadCorner: NFiShape {
-  public var inset: CGFloat = .zero
+public struct QuadCorner: Shape {
   public var cornerRadius: CGFloat = 0.0
   
   public init(cornerRadius: CGFloat) {
@@ -16,32 +15,40 @@ public struct QuadCorner: NFiShape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    
-    let aRect = rect.insetBy(dx: inset, dy: inset)
-    
-    return Path { path in
+    Path { path in
       // starting point
-      path.move(to: CGPoint(x: aRect.minX, y: aRect.minY + cornerRadius))
+      path.move(to: CGPoint(x: rect.minX, y: rect.minY + cornerRadius))
       
-      path.addLine(to: CGPoint(x: aRect.minX, y: aRect.minY))
+      path.addLine(to: CGPoint(x: rect.minX, y: rect.minY))
       
-      path.addLine(to: CGPoint(x: aRect.minX + cornerRadius, y: aRect.minY))
+      path.addLine(to: CGPoint(x: rect.minX + cornerRadius, y: rect.minY))
       
-      path.move(to: CGPoint(x: aRect.maxX - cornerRadius, y: aRect.minY))
+      path.move(to: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY))
       
-      path.addLine(to: CGPoint(x: aRect.maxX, y: aRect.minY))
-      path.addLine(to: CGPoint(x: aRect.maxX, y: aRect.minY + cornerRadius))
+      path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+      path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY + cornerRadius))
       
-      path.move(to: CGPoint(x: aRect.maxX, y: aRect.maxY - cornerRadius))
+      path.move(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
       
-      path.addLine(to: CGPoint(x: aRect.maxX, y: aRect.maxY))
-      path.addLine(to: CGPoint(x: aRect.maxX - cornerRadius, y: aRect.maxY))
+      path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+      path.addLine(to: CGPoint(x: rect.maxX - cornerRadius, y: rect.maxY))
       
-      path.move(to: CGPoint(x: aRect.minX + cornerRadius, y: aRect.maxY))
+      path.move(to: CGPoint(x: rect.minX + cornerRadius, y: rect.maxY))
       
-      path.addLine(to: CGPoint(x: aRect.minX, y: aRect.maxY))
-      path.addLine(to: CGPoint(x: aRect.minX, y: aRect.maxY - cornerRadius))
+      path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+      path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY - cornerRadius))
     }
+  }
+  
+  // MARK: - Deprecations
+  
+  /// The inset amount of the shape
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public var inset: CGFloat = .zero
+  
+  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
+  public func inset(by amount: CGFloat) -> some InsettableShape {
+    InsetShape(shape: self, inset: amount)
   }
 }
 
@@ -51,7 +58,7 @@ struct QuadCorner_Previews: PreviewProvider {
         QuadCorner(cornerRadius: 50)
           .stroke(Color.purple)
         QuadCorner(cornerRadius: 50)
-          .inset(by: 20)
+          .inset(amount: 20)
           .stroke(Color.purple)
       }
       .frame(width: 256, height: 512)
