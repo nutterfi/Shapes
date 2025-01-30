@@ -3,7 +3,7 @@ import SwiftUI
 @available(*, deprecated, renamed: "InsetShape", message: "Renamed InsetShape")
 typealias InsettableWrapperShape = InsetShape
 
-/// A shape with an inset applied to it.
+/// A shape with an inset applied to it. Insets can be differing values for each rectangle edge
 public struct InsetShape<Content: Shape>: InsettableShape {
   
   /// the target shape
@@ -18,11 +18,13 @@ public struct InsetShape<Content: Shape>: InsettableShape {
     self.insets = EdgeInsets(top: inset, leading: inset, bottom: inset, trailing: inset)
   }
   
+  /// Create a new inset shape.
   public init(shape: Content, insets: EdgeInsets) {
     self.shape = shape
     self.insets = insets
   }
   
+  /// Returns an shape inset by equal amounts on each side.
   public func inset(by amount: CGFloat) -> some InsettableShape {
     var me = self
     me.insets = EdgeInsets(top: amount, leading: amount, bottom: amount, trailing: amount)
@@ -55,7 +57,7 @@ public extension Shape {
   struct Demo: View {
     @State private var inset: CGFloat = .zero
     
-    let maximum: CGFloat = 320
+    let maximum: CGFloat = 200
     
     var body: some View {
       VStack(spacing: 20) {
@@ -138,6 +140,11 @@ public extension Shape {
           .inset(by: insets)
           .border(Color.blue)
           .frame(width: 100, height: 100)
+          .overlay {
+            Rectangle()
+              .inset(by: insets)
+              .stroke()
+          }
       }
       .padding()
     }

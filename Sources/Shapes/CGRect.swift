@@ -48,14 +48,23 @@ public extension CGRect {
     return rects
   }
   
-  /// Adjusts a rectangle by the given edge insets. Valid for LTR layout directions only.
-  /// TODO: Support for RTL
+  /// Adjusts a rectangle by the given edge insets.
+  /// - Parameter insets: The amount of inset to apply to each rectangle edge
+  /// - Returns: A new rectangle, inset by the specified amount.
+  ///
+  /// The rectangle is standardized and then the inset parameters are applied. If the resulting rectangle would have a negative height or width, a null rectangle is returned.
   func inset(by insets: EdgeInsets) -> CGRect {
-    let newOrigin = origin.offsetBy(dx: insets.leading, dy: insets.top)
-    let newSize: CGSize = CGSize(
-      width: width - insets.trailing - insets.leading,
-      height: height - insets.bottom - insets.top
-    )
+    
+    let standard = self.standardized
+    let newWidth = standard.width - insets.leading - insets.trailing
+    let newHeight = standard.height - insets.top - insets.bottom
+    
+    if newWidth < 0 || newHeight < 0 {
+      return .null
+    }
+    
+    let newOrigin = standard.origin.offsetBy(dx: insets.leading, dy: insets.top)
+    let newSize = CGSize(width: newWidth, height: newHeight)
     
     return CGRect(origin: newOrigin, size: newSize)
   }
