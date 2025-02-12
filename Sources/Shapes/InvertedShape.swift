@@ -49,11 +49,10 @@ struct InvertedShape_Previews: PreviewProvider {
     ZStack {
       Text("OK SO HERE IS SOMETHING BEHIND THE INVERTED SHAPE THAT NORMALLY YOU WOULD NOT BE ABLE TO SEE BUT NOW THAT THERE IS A REULEAUX WINDOW YOU CAN SEE THE TEXT. WOOWEEEE")
         .font(.system(size: 50))
-        .foregroundColor(.red)
+        .foregroundStyle(.red)
       
       InvertedShape(shape: Reuleaux.triangle)
         .foregroundStyle(LinearGradient(colors: [.blue, .black], startPoint: .topLeading, endPoint: .bottomTrailing))
-//        .opacity(0.8)
     }
   }
 }

@@ -69,7 +69,7 @@ struct RightKite_Previews: PreviewProvider {
     ZStack {
       Circle().stroke()
       RightKite(pointRatio: 0.25)
-        .inset(by: 50)
+        .inset(amount: 50)
         .stroke()
       Circle()
         .inset(by: 50)

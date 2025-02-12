@@ -93,7 +93,7 @@ public struct StrokeStyledPolygon: Shape {
         
         let dashLength: CGFloat = perimeter / CGFloat(dashPatternCount)
         
-        strokeRatio = dashLength * (1 - strokeWidth / dim) //* (lineWidth)
+        strokeRatio = dashLength * (1 - strokeWidth / dim)
       } else if let lineWidthRatio = lineWidthRatio {
         
         let clampedLineWidthRatio = lineWidthRatio.clamped(to: 0.0...CGFloat(0.5))
@@ -101,12 +101,7 @@ public struct StrokeStyledPolygon: Shape {
         let perimeter = CGFloat(sides) * dim * (1 - clampedLineWidthRatio) * sin(.pi / CGFloat(sides))
         
         strokeRatio = dashPatternCount > 0 ? perimeter / CGFloat(dashPatternCount) : 0
-        
-        let lineWidth = clampedLineWidthRatio * dim
-        
-//        // strokeRatio depends on path length
-//        strokeRatio = dashLength * (1.0 - clampedLineWidthRatio)
-        
+                
         strokeWidth = dim * clampedLineWidthRatio
       } else { // this should not happen
         strokeWidth = 1
@@ -154,8 +149,8 @@ public struct StrokeStylePolygon_Previews: PreviewProvider {
   public static var previews: some View {
     StrokeStyledPolygon(
       sides: 5,
-      dashPatternCount: 4,
-      dashPattern: [1,1],
+//      dashPatternCount: 4,
+//      dashPattern: [1,1],
       lineWidth: 1,
       lineCap: .butt,
       lineJoin: .miter

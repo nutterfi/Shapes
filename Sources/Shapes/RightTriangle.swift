@@ -49,7 +49,7 @@ struct RightTriangle_Previews: PreviewProvider {
       ZStack {
         Rectangle().inset(by: inset).stroke()
         RightTriangle()
-          .inset(by: inset)
+          .inset(amount: inset)
           .border(.purple, width: 10)
       }
     }

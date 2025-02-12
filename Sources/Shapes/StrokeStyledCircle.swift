@@ -147,7 +147,7 @@ public struct StrokeStyledCircle_Previews: PreviewProvider {
         dashPattern: [1, 1],
         lineWidth: 10
       )
-      .foregroundColor(.red)
+      .foregroundStyle(.red)
       .frame(width: 256, height: 256)
 
       StrokeStyledCircle(
@@ -155,7 +155,7 @@ public struct StrokeStyledCircle_Previews: PreviewProvider {
         dashPattern: [1, 1],
         lineWidthRatio: 0.02
       )
-      .foregroundColor(.red)
+      .foregroundStyle(.red)
       .frame(width: 256, height: 256)
     }
     .previewLayout(.sizeThatFits)

@@ -58,7 +58,7 @@ struct CirclePattern_Previews: PreviewProvider {
       
       CirclePattern(pattern: Salinon(), repetitions: 9)
         .border(Color.red)
-        .foregroundColor(.orange)
+        .foregroundStyle(.orange)
     }
   }
 }

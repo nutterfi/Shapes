@@ -62,7 +62,7 @@ struct SimplePolygon_Previews: PreviewProvider {
     ZStack {
       Circle().stroke()  // the unit circle
       SimplePolygon(ratios: [0.33, 0.67, 1])
-        .foregroundColor(Color.blue)
+        .foregroundStyle(Color.blue)
     }
     .border(Color.purple)
   }
@@ -76,7 +76,7 @@ struct SimplePolygon2_Previews: PreviewProvider {
     ZStack {
       Circle().stroke() // the unit circle
       SimplePolygon(ratios: [0.1, 0.5, 0.756, 0.3, 0.4])
-        .foregroundColor(Color.blue)
+        .foregroundStyle(Color.blue)
     }
     .border(Color.purple)
   }
@@ -93,7 +93,7 @@ struct SimplePolygon3_Previews: PreviewProvider {
     ZStack {
       Circle().stroke()
       SimplePolygon(ratios: [0.1, 0.5, 0.756, 0.3, 0.4])
-        .foregroundColor(Color.blue)
+        .foregroundStyle(Color.blue)
     }
     .border(Color.purple)
     .frame(width: 256, height: 128)

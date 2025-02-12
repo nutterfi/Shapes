@@ -31,7 +31,7 @@ struct Diamond_Previews: PreviewProvider {
   static var previews: some View {
     ZStack {
       Diamond()
-      .foregroundColor(.green)
+      .foregroundStyle(.green)
       Diamond().inset(amount: 64)
         .stroke()
     }

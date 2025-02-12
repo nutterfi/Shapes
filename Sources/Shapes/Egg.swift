@@ -61,14 +61,10 @@ public struct Egg: Shape {
       path = path
         .offsetBy(dx: rect.midX - bounding.midX, dy: rect.midY - bounding.midY)
       
-      let boundMin = min(bounding.width, bounding.height)
       let boundMax = max(bounding.width, bounding.height)
-      
       let insetMin = min(rect.width, rect.height)
-      let insetMax = max(rect.width, rect.height)
-      
-      path = path.scale(x: insetMin / boundMax, y: insetMin / boundMax).path(in: rect)
 
+      path = path.scale(x: insetMin / boundMax, y: insetMin / boundMax).path(in: rect)
     }
   }
   
@@ -90,26 +86,19 @@ public struct Egg: Shape {
   
 }
 
-struct Egg_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
       Group {
         Egg(apexAngle: 78)
-          .inset(amount: 30)
           .stroke()
           .rotationEffect(.radians(.pi))
-          .frame(width: 512, height: 128)
+          .frame(maxWidth: .infinity)
         
         Egg(apexAngle: 78)
-          .inset(amount: 30)
           .stroke()
-          .frame(width: 256, height: 256)
         
         Egg(apexAngle: 78)
           .inset(amount: 30)
-          .frame(width: 128, height: 150)
       }
       .border(Color.primary)
       .padding()
-      .previewLayout(.sizeThatFits)
-    }
 }

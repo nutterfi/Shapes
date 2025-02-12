@@ -55,12 +55,12 @@ struct TaperedRect_Previews: PreviewProvider {
       ZStack {
         TaperedRectangle(taper: 20)
           .frame(width:200, height:50)
-        .foregroundColor(.green)
+        .foregroundStyle(.green)
         
         TaperedRectangle(taper: 20)
           .inset(amount: 20)
           .frame(width: 200, height: 50)
-        .foregroundColor(.red)
+        .foregroundStyle(.red)
       }
     }
 }

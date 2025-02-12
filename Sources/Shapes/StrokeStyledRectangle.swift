@@ -111,7 +111,7 @@ public struct StrokeStyledRectangle_Previews: PreviewProvider {
       lineCap: .butt,
       lineJoin: .miter
     )
-    .foregroundColor(.purple)
+    .foregroundStyle(.purple)
     .frame(width: 256, height: 256)
     .previewLayout(.sizeThatFits)
   }

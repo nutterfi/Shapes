@@ -86,13 +86,12 @@ struct CompositeShape_Previews: PreviewProvider {
         .rotation(.degrees(-90))
         .adding(StarPolygon(points: 7, density: 4))
         .subtracting(Salinon())
-        .foregroundColor(.red)
+        .foregroundStyle(.red)
         .frame(width: 128, height: 256)
         
         Reuleaux.triangle
           .subtracting(Circle().scale(0.5))
-          .foregroundColor(.orange)
-        
+          .foregroundStyle(.orange)
       }
       
       Spacer()

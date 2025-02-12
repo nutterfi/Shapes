@@ -48,7 +48,7 @@ struct IsoscelesTriangle_Previews: PreviewProvider {
         ZStack {
           Rectangle().inset(by: inset).stroke()
         IsoscelesTriangle()
-          .inset(by: inset)
+          .inset(amount: inset)
           .border(.purple, width: 10)
         }
       }

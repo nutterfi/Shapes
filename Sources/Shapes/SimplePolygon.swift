@@ -64,7 +64,7 @@ struct SimplePolygon_Previews: PreviewProvider {
       ZStack {
         Circle().stroke()
         SimplePolygon(ratios: [0.1, 0.5, 0.756, 0.3, 0.4])
-        .foregroundColor(Color.blue)
+        .foregroundStyle(Color.blue)
         .opacity(0.3)
       }
       .frame(width: 256, height: 256)
