@@ -59,7 +59,7 @@ public struct Spirolateral: Shape {
         }
       }
       
-      let bounding = path.boundingRect
+      let bounding = path.cgPath.boundingBoxOfPath
       let boundingDim = max(bounding.width, bounding.height)
       
       path = path

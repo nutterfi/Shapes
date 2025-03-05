@@ -4,7 +4,8 @@ import SwiftUI
 public struct Triquetra: Shape {
   /// Whether to center the Triquetra in the frame.
   /// The points on the triquetra will follow a circle inscribed in the path if not centered
-  public var centered = false
+  @available(*, deprecated, message: "Use Shape.align(alignment:) instead")
+  public var centered: Bool
   
   /// The style applied to the shape.  Uses the default initializer if not specified.
   public var strokeStyle: StrokeStyle

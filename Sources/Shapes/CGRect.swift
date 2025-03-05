@@ -16,6 +16,21 @@ public extension CGRect {
     CGPoint(x: maxX, y: maxY)
   }
   
+  /// The shorter side of the standardized version of the rectangle
+  var breadth: CGFloat {
+    min(width, height)
+  }
+  
+  /// The longer side of the standardized version of the rectangle
+  var length: CGFloat {
+    max(width, height)
+  }
+  
+  /// The rectangle's aspect ratio
+  var aspectRatio: CGFloat {
+    width / height
+  }
+  
   /// converts the input UnitPoint to a scaled CGPoint based on the associated CGRect
   /// - Parameters:
   ///   - point: the relative point with respect to the rectangle

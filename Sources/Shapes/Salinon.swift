@@ -3,6 +3,8 @@ import SwiftUI
 public struct Salinon: Shape {
   
   public var innerDiameterRatio: CGFloat
+  
+  @available(*, deprecated, message: "Use Shape.align(alignment:) instead")
   public var centered: Bool
   
   public init(inset: CGFloat = .zero, innerDiameterRatio: CGFloat = 0.2, centered: Bool = false) {
@@ -43,7 +45,7 @@ public struct Salinon: Shape {
       path.closeSubpath()
       
       if centered {
-        let bounding = path.boundingRect
+        let bounding = path.cgPath.boundingBoxOfPath
         let boundingDim = max(bounding.width, bounding.height)
         
         path = path

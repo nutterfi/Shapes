@@ -56,7 +56,7 @@ public struct Egg: Shape {
       
       path.closeSubpath()
       
-      let bounding = path.boundingRect
+      let bounding = path.cgPath.boundingBoxOfPath
       
       path = path
         .offsetBy(dx: rect.midX - bounding.midX, dy: rect.midY - bounding.midY)
