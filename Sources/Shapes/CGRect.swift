@@ -88,4 +88,20 @@ public extension CGRect {
   static func square(_ size: CGFloat) -> CGRect {
     CGRect(origin: .zero, size: CGSize(width: size, height: size))
   }
+  
+  /// Creates a rectangle with square dimensions at the provided origin
+  static func square(origin: CGPoint, size: CGFloat) -> CGRect {
+    CGRect(origin: origin, size: CGSize(width: size, height: size))
+  }
+  
+  /// Creates a rectangle with square dimensions at the provided origin
+  static func square(center: CGPoint, size: CGFloat) -> CGRect {
+    CGRect(center: center, size: CGSize(width: size, height: size))
+  }
+  
+  /// Creates a rectangle with the specified center point and size
+  init(center: CGPoint, size: CGSize) {
+    let origin = CGPoint(x: center.x - size.width / 2, y: center.y - size.height / 2)
+    self.init(origin: origin, size: size)
+  }
 }

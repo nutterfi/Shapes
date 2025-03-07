@@ -9,6 +9,7 @@ import SwiftUI
 
 public struct Quad: Shape, Polygon {
   public init() {}
+  
   public func path(in rect: CGRect) -> Path {
     Path { path in
       path.addRect(rect)
@@ -24,17 +25,6 @@ public struct Quad: Shape, Polygon {
       CGPoint(x: rect.maxX, y: rect.maxY),
       CGPoint(x: rect.minX, y: rect.maxY)
     ]
-  }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
   }
 }
 

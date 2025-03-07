@@ -46,17 +46,6 @@ public struct Arrowhead: Shape {
       path.closeSubpath()
     }
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset value of the arrowhead
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
 }
 
 #Preview("Arrowhead") {

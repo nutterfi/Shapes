@@ -26,15 +26,13 @@ public struct DragonCurve: Shape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let dim = min(rect.width, rect.height)
-    
-    return Path { path in
+    Path { path in
       var elements = ""
       
       // 'R' == 0
       // 'L' == 1
       // for each step
-      path.move(to: CGPoint(x: rect.midX, y: rect.midY))
+      path.move(to: rect.midXY)
       for _ in 0..<steps {
         let reversed = String(elements.reversed())
         let swapped = reversed.map { element in
@@ -56,26 +54,13 @@ public struct DragonCurve: Shape {
       }
       
       let bounding = path.boundingRect
-      let boundingDim = max(bounding.width, bounding.height)
       
       path = path
         .offsetBy(dx: rect.midX - bounding.midX, dy: rect.midY - bounding.midY)
-        .scale(dim / boundingDim)
+        .scale(rect.breadth / bounding.length)
         .path(in: rect)
     }
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
-    
 }
 
 struct DragonCurve_Previews: PreviewProvider {

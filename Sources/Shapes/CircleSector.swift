@@ -20,7 +20,7 @@ public struct CircleSector: Shape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let radius = min(rect.width, rect.height) * 0.5
+      let radius = rect.breadth * 0.5
       path.move(to: rect.midXY)
       path.addArc(
         center: rect.midXY,

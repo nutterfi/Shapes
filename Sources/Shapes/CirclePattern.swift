@@ -24,8 +24,7 @@ public struct CirclePattern<Content: Shape>: Shape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let minimumEdge = min(rect.width, rect.height)
-      let inset = minimumEdge / CGFloat(repetitions) * 0.8
+      let inset = rect.breadth / CGFloat(repetitions) * 0.8
       let insetRect = rect.insetBy(dx: inset, dy: inset)
       let vertices = ConvexPolygon(sides: repetitions)
         .vertices(in: insetRect)

@@ -21,8 +21,8 @@ public struct IsotoxalPolygon: Shape, Polygon {
   
   /// The positions of the polygon corners, ordered by their angular position around the circle. Every even-numbered point is positioned based on the `innerRadius`
   public func vertices(in rect: CGRect) -> [CGPoint] {
-    let r = min(rect.size.width, rect.size.height) / 2
-    let origin = CGPoint(x: rect.midX, y: rect.midY)
+    let r = rect.breadth / 2
+    let origin = rect.midXY
     return (0 ..< sides).map {
       let radius = $0 % 2 == 0 ? r : r * innerRadius
       let theta = 2 * .pi * CGFloat($0) / CGFloat(sides) - .pi / 2 // the origin will now be facing north
@@ -41,18 +41,6 @@ public struct IsotoxalPolygon: Shape, Polygon {
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
-  
 }
 
 extension IsotoxalPolygon: Animatable {

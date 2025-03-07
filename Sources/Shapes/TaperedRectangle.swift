@@ -34,33 +34,19 @@ public struct TaperedRectangle: Shape, Polygon {
       path.closeSubpath()
     }
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
 }
-
-@available(*, deprecated, message: "TaperedRect has been renamed to TaperedRectangle")
-public typealias TaperedRect = TaperedRectangle
 
 struct TaperedRect_Previews: PreviewProvider {
     static var previews: some View {
       ZStack {
         TaperedRectangle(taper: 20)
           .frame(width:200, height:50)
-        .foregroundStyle(.green)
+          .foregroundStyle(.green)
         
         TaperedRectangle(taper: 20)
           .inset(amount: 20)
           .frame(width: 200, height: 50)
-        .foregroundStyle(.red)
+          .foregroundStyle(.red)
       }
     }
 }

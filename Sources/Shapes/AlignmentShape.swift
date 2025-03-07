@@ -74,7 +74,7 @@ public extension Shape {
       
       controls
       
-      Circle()
+      Salinon()
         .align(with: alignment)
         .stroke()
         .border(Color.green)

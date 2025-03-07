@@ -30,8 +30,8 @@ public struct Spirolateral: Shape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let dim = min(rect.width, rect.height)
-      var point = CGPoint(x: rect.midX, y: rect.midY)
+      let dim = rect.breadth
+      var point = rect.midXY
       path.move(to: point)
       
       var angle: CGFloat = 0
@@ -67,17 +67,6 @@ public struct Spirolateral: Shape {
         .scale(dim / boundingDim)
         .path(in: rect)
     }
-  }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
   }
 }
 

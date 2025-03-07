@@ -29,9 +29,9 @@ public struct Egg: Shape {
        3. Complete the oval by a circular arc centered at B, from D to E.
        */
     
-      let mid = CGPoint(x: rect.midX, y: rect.midY)
+      let mid = rect.midXY
       
-      let ac = min(rect.width, rect.height)
+      let ac = rect.breadth
       let c = CGPoint(x: rect.midX + ac * 0.5, y: rect.midY)
       let a = CGPoint(x: rect.midX - ac * 0.5, y: rect.midY)
       
@@ -62,7 +62,7 @@ public struct Egg: Shape {
         .offsetBy(dx: rect.midX - bounding.midX, dy: rect.midY - bounding.midY)
       
       let boundMax = max(bounding.width, bounding.height)
-      let insetMin = min(rect.width, rect.height)
+      let insetMin = rect.breadth
 
       path = path.scale(x: insetMin / boundMax, y: insetMin / boundMax).path(in: rect)
     }
@@ -72,18 +72,6 @@ public struct Egg: Shape {
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
-  
 }
 
 #Preview {

@@ -16,7 +16,7 @@ public extension Path {
   mutating func addSCurve(in rect: CGRect, control1: CGPoint, control2: CGPoint, reverse: Bool = false) {
     var path = Path()
     path.move(to: CGPoint(x: rect.minX, y: rect.maxY))
-    path.addQuadCurve(to: CGPoint(x: rect.midX, y: rect.midY), control: control1)
+    path.addQuadCurve(to: rect.midXY, control: control1)
     
     path.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.minY), control: control2)
     if reverse {

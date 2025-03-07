@@ -81,7 +81,7 @@ public struct StrokeStyledPolygon: Shape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let dim = min(rect.width, rect.height)
+      let dim = rect.breadth
       
       let strokeWidth: CGFloat
       let strokeRatio: CGFloat
@@ -131,17 +131,6 @@ public struct StrokeStyledPolygon: Shape {
         .path(in: rect)
         .strokedPath(style)
     }
-  }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
   }
 }
 

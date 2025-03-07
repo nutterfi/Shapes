@@ -1,8 +1,5 @@
 import SwiftUI
 
-@available(*, deprecated, renamed: "InsetShape", message: "Renamed InsetShape")
-typealias InsettableWrapperShape = InsetShape
-
 /// A shape with an inset applied to it. Insets can be differing values for each rectangle edge
 public struct InsetShape<Content: Shape>: InsettableShape {
   

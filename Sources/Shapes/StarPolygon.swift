@@ -55,18 +55,6 @@ public struct StarPolygon: Shape, RegularPolygon {
   public func sizeThatFits(_ proposal: ProposedViewSize) -> CGSize {
     Circle().sizeThatFits(proposal)
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
-  
 }
 
 extension StarPolygon: Animatable {
@@ -89,7 +77,6 @@ public struct StarPolygon_Previews: PreviewProvider {
       StarPolygon(points: 5, density: 2)
         .inset(amount: 50)
         .stroke(Color.green)
-        
     }
   }
 }

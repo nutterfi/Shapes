@@ -76,7 +76,7 @@ public struct StrokeStyledCircle: Shape {
   
   public func path(in rect: CGRect) -> Path {
     Path { path in
-      let dim = min(rect.width, rect.height)
+      let dim = rect.breadth
       
       // Circumference of the circle split into the number of dashes gives the length of a single dash (or segment)
       let dashLength: CGFloat = .pi * dim / CGFloat(numberOfSegments)
@@ -125,17 +125,6 @@ public struct StrokeStyledCircle: Shape {
         .path(in: rect)
         .strokedPath(style)
     }
-  }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
   }
 }
 

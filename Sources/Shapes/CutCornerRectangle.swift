@@ -7,41 +7,6 @@
 
 import SwiftUI
 
-struct CutCornerDemo: View {
-  @State private var cutLengthTL: CGFloat = 0
-  @State private var cutLengthTR: CGFloat = 0
-  @State private var cutLengthBL: CGFloat = 0
-  @State private var cutLengthBR: CGFloat = 0
-  
-  var body: some View {
-    VStack {
-      Slider(value: $cutLengthTL, in: 0.0...0.5)
-      Slider(value: $cutLengthTR, in: 0.0...0.5)
-      Slider(value: $cutLengthBL, in: 0.0...0.5)
-      Slider(value: $cutLengthBR, in: 0.0...0.5)
-      
-      GeometryReader { proxy in
-        let dim = min(proxy.size.width, proxy.size.height)
-        ZStack {
-          VStack {
-            
-            HStack {
-              CutCornerRectangle(cutLength: dim * cutLengthTL)
-              let corners: [CutCornerRectangle.Corner: CGFloat] = [.topLeft: dim * cutLengthTL,
-                                                                   .topRight: dim * cutLengthTR,
-                                                                   .bottomLeft:  dim * cutLengthBL,
-                                                                   .bottomRight: dim * cutLengthBR]
-              CutCornerRectangle(corners: corners)
-            }
-            
-          }
-        }
-        .frame(width: proxy.size.width, height: proxy.size.height)
-      }
-    }
-  }
-}
-
 /// 45-degree angle cuts on any or all corners of a rectangle
 public struct CutCornerRectangle: Shape {
   
@@ -101,22 +66,47 @@ public struct CutCornerRectangle: Shape {
       path.closeSubpath()
     }
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
 }
 
 struct CutCornerRectangle_Previews: PreviewProvider {
     static var previews: some View {
-      CutCornerDemo()
-        .frame(width: 512, height: 1024)
+      
+      struct CutCornerDemo: View {
+        @State private var cutLengthTL: CGFloat = 0
+        @State private var cutLengthTR: CGFloat = 0
+        @State private var cutLengthBL: CGFloat = 0
+        @State private var cutLengthBR: CGFloat = 0
+        
+        var body: some View {
+          VStack {
+            Slider(value: $cutLengthTL, in: 0.0...0.5)
+            Slider(value: $cutLengthTR, in: 0.0...0.5)
+            Slider(value: $cutLengthBL, in: 0.0...0.5)
+            Slider(value: $cutLengthBR, in: 0.0...0.5)
+            
+            GeometryReader { proxy in
+              let dim = min(proxy.size.width, proxy.size.height)
+              ZStack {
+                VStack {
+                  
+                  HStack {
+                    CutCornerRectangle(cutLength: dim * cutLengthTL)
+                    let corners: [CutCornerRectangle.Corner: CGFloat] = [.topLeft: dim * cutLengthTL,
+                                                                         .topRight: dim * cutLengthTR,
+                                                                         .bottomLeft:  dim * cutLengthBL,
+                                                                         .bottomRight: dim * cutLengthBR]
+                    CutCornerRectangle(corners: corners)
+                  }
+                  
+                }
+              }
+              .frame(width: proxy.size.width, height: proxy.size.height)
+            }
+          }
+          .padding()
+        }
+      }
+    
+      return CutCornerDemo()
     }
 }

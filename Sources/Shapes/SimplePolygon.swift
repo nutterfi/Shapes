@@ -26,8 +26,8 @@ public struct SimplePolygon: Shape, Polygon {
   }
   
   public func vertices(in rect: CGRect) -> [CGPoint] {
-    let r = min(rect.size.width, rect.size.height) / 2
-    let origin = CGPoint(x: rect.midX, y: rect.midY)
+    let r = rect.breadth / 2
+    let origin = rect.midXY
     return ratios.map {
       let theta = 2 * .pi * $0
       return CGPoint(x: origin.x + r * cos(theta), y: origin.y + r * sin(theta))
@@ -45,18 +45,6 @@ public struct SimplePolygon: Shape, Polygon {
       }
     }
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
-  
 }
 
 struct SimplePolygon_Previews: PreviewProvider {

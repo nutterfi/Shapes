@@ -1,6 +1,6 @@
 //
 //  Trapezoid.swift
-//  
+//
 //
 //  Created by nutterfi on 9/25/21.
 //
@@ -37,31 +37,19 @@ public struct Trapezoid: Shape, Polygon {
       path.closeSubpath()
     }
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
-   
 }
 
 struct Trapezoid_Previews: PreviewProvider {
-    static var previews: some View {
-      VStack {
-        Trapezoid(pct1: 0.7, pct2: 0.3)
-          .frame(width: 256, height: 128)
-          .border(Color.gray)
-
-        Trapezoid()
-          .inset(amount: 20)
-          .frame(width: 256, height: 128)
+  static var previews: some View {
+    VStack {
+      Trapezoid(pct1: 0.7, pct2: 0.3)
+        .frame(width: 256, height: 128)
         .border(Color.gray)
-      }
+      
+      Trapezoid()
+        .inset(amount: 20)
+        .frame(width: 256, height: 128)
+        .border(Color.gray)
     }
+  }
 }

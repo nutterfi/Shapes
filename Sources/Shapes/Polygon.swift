@@ -24,8 +24,8 @@ public extension RegularPolygon {
   
   /// obtains p equally spaced points around a circle inscribed in rect, arranged clockwise starting at the top of the unit circle, with any additional offset
   func vertices(in rect: CGRect, offset: Angle = .zero) -> [CGPoint] {
-    let r = min(rect.size.width, rect.size.height) / 2
-    let origin = CGPoint(x: rect.midX, y: rect.midY)
+    let r = rect.breadth / 2
+    let origin = rect.midXY
     let array: [CGPoint] = Array(0 ..< sides).map {
       let theta = 2 * .pi * CGFloat($0) / CGFloat(sides) + CGFloat(offset.radians) - CGFloat.pi / 2  // pointing north!
       return CGPoint(x: origin.x + r * cos(theta), y: origin.y + r * sin(theta))

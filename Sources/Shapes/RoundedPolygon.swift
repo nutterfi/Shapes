@@ -12,8 +12,8 @@ public struct RoundedPolygon: Shape {
   public func path(in rect: CGRect) -> Path {
     Path { path in
       var points = [CGPoint]()
-      let radius = min(rect.width, rect.height) / 2
-      let origin = CGPoint(x: rect.midX, y: rect.midY)
+      let radius = rect.breadth / 2
+      let origin = rect.midXY
       let pSides = sides == 0 ? 2 : abs(sides)
       let pCornerRadius = abs(cornerRadius)
       
@@ -22,7 +22,6 @@ public struct RoundedPolygon: Shape {
         let x = radius * cos(theta)
         let y = radius * sin(theta)
         points.append(.init(x: x + origin.x, y: y + origin.y))
-
       }
       
       if pCornerRadius == 0 {

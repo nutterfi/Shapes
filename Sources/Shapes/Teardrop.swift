@@ -12,7 +12,7 @@ public struct Teardrop: Shape {
   }
   
   public func path(in rect: CGRect) -> Path {
-    let dim = min(rect.width, rect.height)
+    let dim = rect.breadth
     let origin = CGPoint(x: rect.midX, y: rect.minY)
     
     let controlPoint1 = CGPoint(
@@ -51,20 +51,9 @@ public struct Teardrop: Shape {
       path.closeSubpath()
     }
   }
-  
-  // MARK: - Deprecations
-  
-  /// The inset amount of the shape
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public var inset: CGFloat = .zero
-  
-  @available(*, deprecated, message: "Use InsetShape or .inset(amount:) instead")
-  public func inset(by amount: CGFloat) -> some InsettableShape {
-    InsetShape(shape: self, inset: amount)
-  }
 }
 
-struct TeardropDemo: View {
+private struct TeardropDemo: View {
   @State private var xValue: CGFloat = 0.0
   @State private var yValue: CGFloat = 0.0
   

@@ -44,7 +44,7 @@ public struct Ring: Shape {
     var dash = style.dash
     var dashPhase = style.dashPhase
     
-    let outerRadius = min(rect.width, rect.height) * 0.5
+    let outerRadius = rect.breadth * 0.5
     
     let midRadius = outerRadius - (style.lineWidth * 0.5)
     
